@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 24.8.1.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;SkyDrop — Gandhinagar's Drone Delivery&lt;/title&gt;
+&lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;!-- Google Maps loaded SYNCHRONOUSLY so it's ready before any JS runs --&gt;
+&lt;script src=&quot;https://maps.googleapis.com/maps/api/js?key=AIzaSyD9sDCuZFAsGM98fe82E5DDk1WcQdHLU6M&amp;libraries=geometry,places&quot;&gt;&lt;/script&gt;
+
+&lt;style&gt;
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#f8fafc}
+.font-display,h1,h2,h3,h4,h5{font-family:'Syne',sans-serif}
+
+/* ── Nav ── */
+.glass-nav{background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);box-shadow:0 2px 20px rgba(0,0,0,.04)}
+
+/* ── Gradient text ── */
+.gradient-text{background:linear-gradient(135deg,#f97316,#fb923c,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── Hero bg orbs ── */
+.orb1{position:absolute;top:80px;left:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(251,146,60,.25),transparent 70%);border-radius:50%;pointer-events:none}
+.orb2{position:absolute;bottom:0;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);border-radius:50%;pointer-events:none}
+.orb3{position:absolute;top:40%;left:40%;width:300px;height:300px;background:radial-gradient(circle,rgba(251,191,36,.15),transparent 70%);border-radius:50%;pointer-events:none}
+
+/* ── Animations ── */
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-20px) rotate(1deg)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulseRing{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+@keyframes bladeSpin{to{transform:rotate(360deg)}}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes droneGlow{0%,100%{filter:drop-shadow(0 0 12px rgba(249,115,22,.4))}50%{filter:drop-shadow(0 0 24px rgba(249,115,22,.7))}}
+@keyframes trailFade{0%{opacity:.6;transform:scaleX(1)}100%{opacity:0;transform:scaleX(0)}}
+
+.animate-float{animation:float 5s ease-in-out infinite}
+.animate-slide-up{animation:slideUp .8s cubic-bezier(.16,1,.3,1) forwards}
+.d1{animation-delay:.1s;opacity:0}.d2{animation-delay:.2s;opacity:0}.d3{animation-delay:.3s;opacity:0}.d4{animation-delay:.4s;opacity:0}
+.propeller{transform-origin:center;animation:bladeSpin .05s linear infinite}
+.modal-in{animation:modalIn .3s cubic-bezier(.16,1,.3,1) forwards}
+.spinner-icon{animation:spin .8s linear infinite;display:inline-block}
+.drone-glow{animation:droneGlow 2s ease-in-out infinite}
+
+/* ── Product cards ── */
+.product-card{transition:all .35s cubic-bezier(.16,1,.3,1);border:1.5px solid rgba(0,0,0,.06);background:white}
+.product-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 20px 48px -8px rgba(0,0,0,.13);border-color:rgba(249,115,22,.2)}
+.product-card:hover .add-btn{opacity:1;transform:translateY(0) scale(1)}
+.add-btn{opacity:0;transform:translateY(8px) scale(.9);transition:all .3s cubic-bezier(.16,1,.3,1)}
+
+/* ── Buttons ── */
+.btn-orange{background:linear-gradient(135deg,#f97316,#ea580c);color:white;transition:all .3s;position:relative;overflow:hidden}
+.btn-orange::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transition:left .5s}
+.btn-orange:hover::before{left:100%}
+.btn-orange:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(249,115,22,.38)}
+.btn-orange:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── Category pills ── */
+.cat-pill{transition:all .25s;white-space:nowrap;border:1.5px solid transparent}
+.cat-pill.active{background:linear-gradient(135deg,#f97316,#ea580c);color:white;box-shadow:0 4px 14px rgba(249,115,22,.32)}
+.cat-pill:not(.active):hover{background:#fff7ed;color:#ea580c;border-color:#fed7aa}
+
+/* ── Cart ── */
+.cart-sidebar{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+
+/* ── Modal ── */
+.modal-bg{background:rgba(0,0,0,.55);backdrop-filter:blur(8px)}
+
+/* ── Payment ── */
+.pay-method{transition:all .25s;border:2px solid #e5e7eb;cursor:pointer}
+.pay-method:hover{border-color:#f97316;background:#fff7ed}
+.pay-method.selected{border-color:#f97316;background:#fff7ed;box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+
+/* ── Auth inputs ── */
+.auth-input{width:100%;padding:11px 14px;border:2px solid #e5e7eb;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;transition:all .25s;background:#fafafa;outline:none}
+.auth-input:focus{border-color:#f97316;background:white;box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+
+/* ── Auth tabs ── */
+.auth-tab{transition:all .25s;border-bottom:3px solid transparent;padding-bottom:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600}
+.auth-tab.active{border-color:#f97316;color:#f97316}
+.auth-tab:not(.active){color:#9ca3af}
+.auth-tab:not(.active):hover{color:#6b7280}
+
+/* ── Feature cards ── */
+.feature-card{transition:all .35s;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(4px)}
+.feature-card:hover{transform:translateY(-8px);background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+
+/* ── User avatar ── */
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;cursor:pointer;border:2px solid white;box-shadow:0 2px 10px rgba(249,115,22,.28)}
+
+/* ── Toast ── */
+.toast{transition:all .4s cubic-bezier(.16,1,.3,1)}
+
+/* ── Map containers ── */
+#locationMap,#trackingMap{border-radius:16px;overflow:hidden}
+
+/* ── No scrollbar ── */
+.no-scroll::-webkit-scrollbar{display:none}.no-scroll{-ms-overflow-style:none;scrollbar-width:none}
+
+/* ── Delivery tiers ── */
+.tier-free{background:#dcfce7;color:#166534}
+.tier-low{background:#fef9c3;color:#713f12}
+.tier-mid{background:#ffedd5;color:#9a3412}
+.tier-high{background:#fee2e2;color:#991b1b}
+
+/* ── Pulse dot ── */
+.pulse-dot{position:relative}
+.pulse-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid #22c55e;animation:pulseRing 1.5s ease-out infinite}
+
+/* ── Drone SVG on map ── */
+.map-drone-icon{filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))}
+
+/* ── Status steps ── */
+.step-done{background:#dcfce7;border-color:#22c55e}
+.step-active{background:#fff7ed;border-color:#f97316;animation:pulseRing 2s ease-out infinite}
+.step-pending{background:#f9fafb;border-color:#e5e7eb;opacity:.45}
+
+/* ── Image fallback bg ── */
+.img-bg{background:linear-gradient(135deg,#fff7ed,#fef3c7)}
+
+/* ── Google sign-in btn ── */
+.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border:2px solid #e5e7eb;border-radius:12px;background:white;cursor:pointer;transition:all .25s;font-weight:600;font-family:'DM Sans',sans-serif;font-size:14px;color:#374151;width:100%}
+.google-btn:hover{border-color:#f97316;background:#fff7ed;box-shadow:0 4px 12px rgba(0,0,0,.07)}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;bg-slate-50 text-gray-900&quot;&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════ --&gt;
+&lt;nav class=&quot;fixed w-full z-50 glass-nav&quot; id=&quot;navbar&quot;&gt;
+  &lt;div class=&quot;max-w-7xl mx-auto px-5 lg:px-8&quot;&gt;
+    &lt;div class=&quot;flex justify-between items-center h-16&quot;&gt;
+
+      &lt;!-- Logo --&gt;
+      &lt;div class=&quot;flex items-center gap-3 cursor-pointer&quot; onclick=&quot;scrollTo({top:0,behavior:'smooth'})&quot;&gt;
+        &lt;div class=&quot;w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200&quot;&gt;
+          &lt;i class=&quot;fas fa-paper-plane text-white text-base -rotate-12&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;leading-none&quot;&gt;
+          &lt;div class=&quot;font-display font-bold text-xl tracking-tight&quot;&gt;SkyDrop&lt;/div&gt;
+          &lt;div class=&quot;text-[11px] font-medium text-orange-600&quot;&gt;Gandhinagar Drone Delivery&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Search --&gt;
+      &lt;div class=&quot;hidden md:flex flex-1 max-w-sm mx-8&quot;&gt;
+        &lt;div class=&quot;relative w-full&quot;&gt;
+          &lt;input id=&quot;searchInput&quot; type=&quot;text&quot; placeholder=&quot;Search products…&quot;
+            class=&quot;w-full pl-10 pr-4 py-2.5 bg-gray-100 rounded-full border-0 text-sm focus:bg-white focus:ring-2 focus:ring-orange-400 transition-all outline-none&quot;&gt;
+          &lt;i class=&quot;fas fa-search absolute left-3.5 top-3 text-gray-400 text-sm&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Actions --&gt;
+      &lt;div class=&quot;flex items-center gap-2&quot;&gt;
+        &lt;!-- Location chip --&gt;
+        &lt;button id=&quot;locChip&quot; onclick=&quot;openLocModal()&quot;
+          class=&quot;hidden md:flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold transition-all&quot;&gt;
+          &lt;i class=&quot;fas fa-map-marker-alt text-blue-500 text-xs&quot;&gt;&lt;/i&gt;
+          &lt;span id=&quot;locChipTxt&quot;&gt;Set Location&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;!-- Fee chip --&gt;
+        &lt;div id=&quot;feeChip&quot; class=&quot;hidden items-center gap-1.5 bg-orange-50 text-orange-700 px-3 py-1.5 rounded-full text-xs font-semibold&quot;&gt;
+          &lt;i class=&quot;fas fa-paper-plane text-orange-400 text-xs&quot;&gt;&lt;/i&gt;
+          &lt;span id=&quot;feeChipTxt&quot;&gt;₹40 delivery&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;!-- Cart --&gt;
+        &lt;button onclick=&quot;toggleCart()&quot; class=&quot;relative p-2.5 hover:bg-gray-100 rounded-full transition-all&quot;&gt;
+          &lt;i class=&quot;fas fa-shopping-bag text-xl text-gray-700&quot;&gt;&lt;/i&gt;
+          &lt;span id=&quot;cartBadge&quot; class=&quot;absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center opacity-0 scale-75 transition-all&quot;&gt;0&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;!-- Auth --&gt;
+        &lt;div id=&quot;authArea&quot;&gt;
+          &lt;button onclick=&quot;openAuthModal()&quot; class=&quot;btn-orange px-4 py-2 rounded-full text-sm font-semibold&quot;&gt;
+            &lt;i class=&quot;fas fa-user mr-1.5&quot;&gt;&lt;/i&gt;Sign In
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ --&gt;
+&lt;section class=&quot;relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-emerald-50&quot;&gt;
+  &lt;div class=&quot;orb1&quot;&gt;&lt;/div&gt;&lt;div class=&quot;orb2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;orb3&quot;&gt;&lt;/div&gt;
+
+  &lt;div class=&quot;max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10 py-16&quot;&gt;
+    &lt;div class=&quot;grid lg:grid-cols-2 gap-16 items-center&quot;&gt;
+
+      &lt;!-- Left --&gt;
+      &lt;div class=&quot;space-y-7&quot;&gt;
+        &lt;div class=&quot;inline-flex items-center gap-2 bg-orange-100 border border-orange-200 px-4 py-2 rounded-full text-sm font-semibold text-orange-700 animate-slide-up&quot;&gt;
+          &lt;span class=&quot;w-2 h-2 bg-orange-500 rounded-full animate-pulse&quot;&gt;&lt;/span&gt;
+          India's First AI Drone Grocery Delivery
+        &lt;/div&gt;
+
+        &lt;h1 class=&quot;text-5xl lg:text-[3.8rem] font-display font-bold leading-[1.1] animate-slide-up d1&quot;&gt;
+          Groceries at&lt;br&gt;
+          &lt;span class=&quot;gradient-text&quot;&gt;warp speed&lt;/span&gt;&lt;br&gt;
+          &lt;span class=&quot;text-gray-900&quot;&gt;by drone.&lt;/span&gt;
+        &lt;/h1&gt;
+
+        &lt;p class=&quot;text-lg text-gray-500 max-w-md leading-relaxed animate-slide-up d2&quot;&gt;
+          Fresh produce, medicines &amp;amp; daily essentials flown to your doorstep across Gandhinagar in under 10 minutes. Pricing by distance — the closer you are, the less you pay.
+        &lt;/p&gt;
+
+        &lt;div class=&quot;flex flex-wrap gap-3 animate-slide-up d3&quot;&gt;
+          &lt;button onclick=&quot;scrollToProducts()&quot; class=&quot;btn-orange px-8 py-3.5 rounded-full font-semibold shadow-lg shadow-orange-200 flex items-center gap-2&quot;&gt;
+            Order Now &lt;i class=&quot;fas fa-arrow-right text-sm&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+          &lt;button onclick=&quot;openLocModal()&quot; class=&quot;flex items-center gap-2 px-8 py-3.5 bg-white text-gray-800 rounded-full font-semibold border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-all shadow-sm&quot;&gt;
+            &lt;i class=&quot;fas fa-crosshairs text-orange-500&quot;&gt;&lt;/i&gt; Set My Location
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Stats row --&gt;
+        &lt;div class=&quot;flex items-center gap-8 pt-2 animate-slide-up d4&quot;&gt;
+          &lt;div class=&quot;flex -space-x-2.5&quot;&gt;
+            &lt;img src=&quot;https://i.pravatar.cc/40?img=1&quot; class=&quot;w-9 h-9 rounded-full border-2 border-white shadow object-cover&quot;&gt;
+            &lt;img src=&quot;https://i.pravatar.cc/40?img=5&quot; class=&quot;w-9 h-9 rounded-full border-2 border-white shadow object-cover&quot;&gt;
+            &lt;img src=&quot;https://i.pravatar.cc/40?img=9&quot; class=&quot;w-9 h-9 rounded-full border-2 border-white shadow object-cover&quot;&gt;
+            &lt;div class=&quot;w-9 h-9 rounded-full border-2 border-white shadow bg-orange-100 flex items-center justify-center text-xs font-bold text-orange-600&quot;&gt;+k&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;h-8 w-px bg-gray-200&quot;&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;div class=&quot;font-display font-bold text-gray-900&quot;&gt;25,000+&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-500&quot;&gt;Deliveries done&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;h-8 w-px bg-gray-200&quot;&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;div class=&quot;font-display font-bold text-gray-900&quot;&gt;8 min&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-500&quot;&gt;Avg delivery&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Right — drone SVG --&gt;
+      &lt;div class=&quot;relative flex items-center justify-center&quot;&gt;
+        &lt;div class=&quot;absolute inset-0 bg-gradient-to-br from-orange-300/20 to-emerald-300/15 rounded-full blur-3xl scale-110&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;relative animate-float drone-glow&quot;&gt;
+          &lt;svg viewBox=&quot;0 0 420 340&quot; class=&quot;w-full max-w-[480px]&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;
+            &lt;defs&gt;
+              &lt;linearGradient id=&quot;bodyG&quot; x1=&quot;0%&quot; y1=&quot;0%&quot; x2=&quot;100%&quot; y2=&quot;100%&quot;&gt;
+                &lt;stop offset=&quot;0%&quot; stop-color=&quot;#fb923c&quot;/&gt;
+                &lt;stop offset=&quot;100%&quot; stop-color=&quot;#dc2626&quot;/&gt;
+              &lt;/linearGradient&gt;
+              &lt;linearGradient id=&quot;armG&quot; x1=&quot;0%&quot; y1=&quot;0%&quot; x2=&quot;0%&quot; y2=&quot;100%&quot;&gt;
+                &lt;stop offset=&quot;0%&quot; stop-color=&quot;#374151&quot;/&gt;
+                &lt;stop offset=&quot;100%&quot; stop-color=&quot;#111827&quot;/&gt;
+              &lt;/linearGradient&gt;
+              &lt;linearGradient id=&quot;boxG&quot; x1=&quot;0%&quot; y1=&quot;0%&quot; x2=&quot;100%&quot; y2=&quot;100%&quot;&gt;
+                &lt;stop offset=&quot;0%&quot; stop-color=&quot;#fbbf24&quot;/&gt;
+                &lt;stop offset=&quot;100%&quot; stop-color=&quot;#f59e0b&quot;/&gt;
+              &lt;/linearGradient&gt;
+              &lt;radialGradient id=&quot;glowG&quot; cx=&quot;50%&quot; cy=&quot;50%&quot; r=&quot;50%&quot;&gt;
+                &lt;stop offset=&quot;0%&quot; stop-color=&quot;#f97316&quot; stop-opacity=&quot;.4&quot;/&gt;
+                &lt;stop offset=&quot;100%&quot; stop-color=&quot;#f97316&quot; stop-opacity=&quot;0&quot;/&gt;
+              &lt;/radialGradient&gt;
+              &lt;filter id=&quot;shadow&quot; x=&quot;-20%&quot; y=&quot;-20%&quot; width=&quot;140%&quot; height=&quot;140%&quot;&gt;
+                &lt;feDropShadow dx=&quot;0&quot; dy=&quot;6&quot; stdDeviation=&quot;8&quot; flood-color=&quot;#f97316&quot; flood-opacity=&quot;.25&quot;/&gt;
+              &lt;/filter&gt;
+            &lt;/defs&gt;
+
+            &lt;!-- Glow halo --&gt;
+            &lt;ellipse cx=&quot;210&quot; cy=&quot;175&quot; rx=&quot;120&quot; ry=&quot;80&quot; fill=&quot;url(#glowG)&quot;/&gt;
+
+            &lt;!-- Ground shadow --&gt;
+            &lt;ellipse cx=&quot;210&quot; cy=&quot;310&quot; rx=&quot;90&quot; ry=&quot;18&quot; fill=&quot;rgba(0,0,0,.08)&quot;/&gt;
+
+            &lt;!-- Arms (cross pattern) --&gt;
+            &lt;rect x=&quot;85&quot; y=&quot;168&quot; width=&quot;250&quot; height=&quot;14&quot; rx=&quot;7&quot; fill=&quot;url(#armG)&quot; filter=&quot;url(#shadow)&quot;/&gt;
+            &lt;rect x=&quot;85&quot; y=&quot;168&quot; width=&quot;250&quot; height=&quot;14&quot; rx=&quot;7&quot; fill=&quot;url(#armG)&quot; transform=&quot;rotate(90 210 175)&quot;/&gt;
+
+            &lt;!-- Motor hubs --&gt;
+            &lt;circle cx=&quot;85&quot;  cy=&quot;175&quot; r=&quot;22&quot; fill=&quot;#4b5563&quot;/&gt;&lt;circle cx=&quot;85&quot;  cy=&quot;175&quot; r=&quot;14&quot; fill=&quot;#374151&quot;/&gt;
+            &lt;circle cx=&quot;335&quot; cy=&quot;175&quot; r=&quot;22&quot; fill=&quot;#4b5563&quot;/&gt;&lt;circle cx=&quot;335&quot; cy=&quot;175&quot; r=&quot;14&quot; fill=&quot;#374151&quot;/&gt;
+            &lt;circle cx=&quot;210&quot; cy=&quot;80&quot;  r=&quot;22&quot; fill=&quot;#4b5563&quot;/&gt;&lt;circle cx=&quot;210&quot; cy=&quot;80&quot;  r=&quot;14&quot; fill=&quot;#374151&quot;/&gt;
+            &lt;circle cx=&quot;210&quot; cy=&quot;270&quot; r=&quot;22&quot; fill=&quot;#4b5563&quot;/&gt;&lt;circle cx=&quot;210&quot; cy=&quot;270&quot; r=&quot;14&quot; fill=&quot;#374151&quot;/&gt;
+
+            &lt;!-- Propellers (CSS animated blur discs) --&gt;
+            &lt;g class=&quot;propeller&quot; style=&quot;transform-origin:85px 175px&quot;&gt;
+              &lt;ellipse cx=&quot;85&quot; cy=&quot;175&quot; rx=&quot;46&quot; ry=&quot;7&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+              &lt;ellipse cx=&quot;85&quot; cy=&quot;175&quot; rx=&quot;7&quot; ry=&quot;46&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+            &lt;/g&gt;
+            &lt;g class=&quot;propeller&quot; style=&quot;transform-origin:335px 175px;animation-direction:reverse&quot;&gt;
+              &lt;ellipse cx=&quot;335&quot; cy=&quot;175&quot; rx=&quot;46&quot; ry=&quot;7&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+              &lt;ellipse cx=&quot;335&quot; cy=&quot;175&quot; rx=&quot;7&quot; ry=&quot;46&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+            &lt;/g&gt;
+            &lt;g class=&quot;propeller&quot; style=&quot;transform-origin:210px 80px&quot;&gt;
+              &lt;ellipse cx=&quot;210&quot; cy=&quot;80&quot; rx=&quot;46&quot; ry=&quot;7&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+              &lt;ellipse cx=&quot;210&quot; cy=&quot;80&quot; rx=&quot;7&quot; ry=&quot;46&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+            &lt;/g&gt;
+            &lt;g class=&quot;propeller&quot; style=&quot;transform-origin:210px 270px;animation-direction:reverse&quot;&gt;
+              &lt;ellipse cx=&quot;210&quot; cy=&quot;270&quot; rx=&quot;46&quot; ry=&quot;7&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+              &lt;ellipse cx=&quot;210&quot; cy=&quot;270&quot; rx=&quot;7&quot; ry=&quot;46&quot; fill=&quot;#9ca3af&quot; opacity=&quot;.45&quot;/&gt;
+            &lt;/g&gt;
+
+            &lt;!-- Body shell --&gt;
+            &lt;ellipse cx=&quot;210&quot; cy=&quot;175&quot; rx=&quot;62&quot; ry=&quot;44&quot; fill=&quot;url(#bodyG)&quot; filter=&quot;url(#shadow)&quot;/&gt;
+            &lt;ellipse cx=&quot;210&quot; cy=&quot;168&quot; rx=&quot;44&quot; ry=&quot;30&quot; fill=&quot;#fb923c&quot; opacity=&quot;.7&quot;/&gt;
+
+            &lt;!-- Camera gimbal --&gt;
+            &lt;rect x=&quot;194&quot; y=&quot;206&quot; width=&quot;32&quot; height=&quot;22&quot; rx=&quot;6&quot; fill=&quot;#1e293b&quot;/&gt;
+            &lt;circle cx=&quot;210&quot; cy=&quot;218&quot; r=&quot;11&quot; fill=&quot;#0f172a&quot;/&gt;
+            &lt;circle cx=&quot;210&quot; cy=&quot;218&quot; r=&quot;7&quot;  fill=&quot;#1e293b&quot;/&gt;
+            &lt;circle cx=&quot;210&quot; cy=&quot;218&quot; r=&quot;3.5&quot; fill=&quot;#10b981&quot;/&gt;
+
+            &lt;!-- LED lights --&gt;
+            &lt;circle cx=&quot;175&quot; cy=&quot;160&quot; r=&quot;5.5&quot; fill=&quot;#ef4444&quot;&gt;&lt;animate attributeName=&quot;opacity&quot; values=&quot;1;.3;1&quot; dur=&quot;1.2s&quot; repeatCount=&quot;indefinite&quot;/&gt;&lt;/circle&gt;
+            &lt;circle cx=&quot;245&quot; cy=&quot;160&quot; r=&quot;5.5&quot; fill=&quot;#22c55e&quot;&gt;&lt;animate attributeName=&quot;opacity&quot; values=&quot;.3;1;.3&quot; dur=&quot;1.2s&quot; repeatCount=&quot;indefinite&quot;/&gt;&lt;/circle&gt;
+
+            &lt;!-- Brand text --&gt;
+            &lt;text x=&quot;210&quot; y=&quot;180&quot; text-anchor=&quot;middle&quot; fill=&quot;white&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; font-family=&quot;Syne,sans-serif&quot; letter-spacing=&quot;2&quot;&gt;SKYDROP&lt;/text&gt;
+
+            &lt;!-- Delivery package --&gt;
+            &lt;rect x=&quot;180&quot; y=&quot;228&quot; width=&quot;60&quot; height=&quot;48&quot; rx=&quot;7&quot; fill=&quot;url(#boxG)&quot; stroke=&quot;#d97706&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;rect x=&quot;195&quot; y=&quot;228&quot; width=&quot;30&quot; height=&quot;12&quot; rx=&quot;3&quot; fill=&quot;#d97706&quot;/&gt;
+            &lt;line x1=&quot;210&quot; y1=&quot;228&quot; x2=&quot;210&quot; y2=&quot;276&quot; stroke=&quot;#d97706&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;180&quot; y1=&quot;252&quot; x2=&quot;240&quot; y2=&quot;252&quot; stroke=&quot;#d97706&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/svg&gt;
+
+          &lt;!-- Float badge --&gt;
+          &lt;div class=&quot;absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-5 py-2.5 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-3 whitespace-nowrap&quot;&gt;
+            &lt;div class=&quot;w-9 h-9 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center&quot;&gt;
+              &lt;i class=&quot;fas fa-clock text-white text-xs&quot;&gt;&lt;/i&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;div class=&quot;font-display font-bold text-sm&quot;&gt;~10 min delivery&lt;/div&gt;
+              &lt;div class=&quot;text-xs text-gray-400&quot;&gt;Sector 1–30, Gandhinagar&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     LIVE TRACKING SECTION
+═══════════════════════════════════════════ --&gt;
+&lt;section id=&quot;trackingSection&quot; class=&quot;hidden py-12 px-4 bg-gray-100&quot;&gt;
+  &lt;div class=&quot;max-w-6xl mx-auto space-y-5&quot;&gt;
+
+    &lt;!-- Header card --&gt;
+    &lt;div class=&quot;bg-white rounded-3xl shadow-lg p-6&quot;&gt;
+      &lt;div class=&quot;flex flex-wrap justify-between items-center gap-4 mb-5&quot;&gt;
+        &lt;div&gt;
+          &lt;h3 class=&quot;text-2xl font-display font-bold flex items-center gap-3&quot;&gt;
+            &lt;span class=&quot;relative inline-block w-3 h-3 pulse-dot&quot;&gt;&lt;span class=&quot;block w-3 h-3 bg-green-500 rounded-full&quot;&gt;&lt;/span&gt;&lt;/span&gt;
+            Live Drone Tracking
+          &lt;/h3&gt;
+          &lt;p class=&quot;text-gray-500 text-sm mt-1&quot; id=&quot;trackStatus&quot;&gt;Drone is en route to your location&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex items-center gap-5&quot;&gt;
+          &lt;div class=&quot;text-center&quot;&gt;
+            &lt;div class=&quot;text-3xl font-display font-bold text-orange-500&quot; id=&quot;etaDisplay&quot;&gt;—&lt;/div&gt;
+            &lt;div class=&quot;text-xs text-gray-400 font-medium&quot;&gt;ETA&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;bg-orange-50 border border-orange-100 px-4 py-2.5 rounded-xl text-sm&quot;&gt;
+            &lt;div class=&quot;font-semibold text-orange-800&quot;&gt;Speed: 52 km/h&lt;/div&gt;
+            &lt;div class=&quot;text-orange-600 text-xs&quot;&gt;Altitude: 120m&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- THE MAP --&gt;
+      &lt;div id=&quot;trackingMap&quot; class=&quot;w-full rounded-2xl overflow-hidden bg-gray-200&quot; style=&quot;height:480px&quot;&gt;
+        &lt;div class=&quot;w-full h-full flex items-center justify-center flex-col gap-3 text-gray-400&quot;&gt;
+          &lt;i class=&quot;fas fa-map-marked-alt text-5xl animate-pulse text-orange-300&quot;&gt;&lt;/i&gt;
+          &lt;span class=&quot;text-sm font-medium&quot;&gt;Initializing map…&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Journey info strip --&gt;
+      &lt;div class=&quot;mt-4 grid grid-cols-3 gap-4 text-center&quot;&gt;
+        &lt;div class=&quot;bg-orange-50 rounded-xl p-3&quot;&gt;
+          &lt;div class=&quot;text-xs text-gray-500 mb-1&quot;&gt;Hub&lt;/div&gt;
+          &lt;div class=&quot;font-display font-bold text-sm text-orange-700&quot;&gt;ISRO, Ahmedabad&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex items-center justify-center gap-2&quot;&gt;
+          &lt;div class=&quot;flex-1 h-0.5 bg-orange-200&quot;&gt;&lt;/div&gt;
+          &lt;i class=&quot;fas fa-paper-plane text-orange-400 text-lg animate-pulse&quot;&gt;&lt;/i&gt;
+          &lt;div class=&quot;flex-1 h-0.5 bg-orange-200&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;bg-green-50 rounded-xl p-3&quot;&gt;
+          &lt;div class=&quot;text-xs text-gray-500 mb-1&quot;&gt;Destination&lt;/div&gt;
+          &lt;div class=&quot;font-display font-bold text-sm text-green-700&quot; id=&quot;destLabel&quot;&gt;Your Location&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+&lt;!-- Status timeline --&gt;
+    &lt;div class=&quot;grid grid-cols-2 md:grid-cols-4 gap-3&quot;&gt;
+      &lt;div class=&quot;bg-white rounded-2xl p-4 shadow flex items-center gap-3 step-done border-2&quot;&gt;
+        &lt;div class=&quot;w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0&quot;&gt;&lt;i class=&quot;fas fa-check text-green-600 text-sm&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;div class=&quot;font-semibold text-sm&quot;&gt;Order Confirmed&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot; id=&quot;orderTimeLbl&quot;&gt;—&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;bg-white rounded-2xl p-4 shadow flex items-center gap-3 border-2&quot; id=&quot;step2&quot;&gt;
+        &lt;div class=&quot;w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0&quot;&gt;&lt;i class=&quot;fas fa-check text-green-600 text-sm&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;div class=&quot;font-semibold text-sm&quot;&gt;Dispatched&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot;&gt;ISRO Hub&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;bg-white rounded-2xl p-4 shadow flex items-center gap-3 border-2 border-orange-400 bg-orange-50&quot; id=&quot;step3&quot;&gt;
+        &lt;div class=&quot;w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 animate-pulse&quot;&gt;&lt;i class=&quot;fas fa-paper-plane text-orange-500 text-sm&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;div class=&quot;font-semibold text-sm text-orange-700&quot;&gt;In Flight&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot;&gt;15 km journey&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;bg-white rounded-2xl p-4 shadow flex items-center gap-3 border-2 border-gray-200 opacity-40&quot; id=&quot;step4&quot;&gt;
+        &lt;div class=&quot;w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0&quot;&gt;&lt;i class=&quot;fas fa-home text-gray-400 text-sm&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;div class=&quot;font-semibold text-sm text-gray-500&quot;&gt;Delivered&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot;&gt;Pending&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     CATEGORIES (sticky)
+═══════════════════════════════════════════ --&gt;
+&lt;div class=&quot;sticky top-16 z-40 bg-white/98 backdrop-blur border-b border-gray-200 shadow-sm py-3&quot; id=&quot;productsTop&quot;&gt;
+  &lt;div class=&quot;max-w-7xl mx-auto px-5&quot;&gt;
+    &lt;div class=&quot;flex gap-2.5 overflow-x-auto no-scroll&quot; id=&quot;catRow&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     PRODUCTS GRID
+═══════════════════════════════════════════ --&gt;
+&lt;section class=&quot;py-10 px-5 min-h-screen bg-slate-50&quot;&gt;
+  &lt;div class=&quot;max-w-7xl mx-auto&quot;&gt;
+
+    &lt;!-- Delivery banner --&gt;
+    &lt;div id=&quot;delBanner&quot; class=&quot;hidden mb-6 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-2xl p-4&quot;&gt;
+      &lt;div class=&quot;flex flex-wrap items-center justify-between gap-3&quot;&gt;
+        &lt;div class=&quot;flex items-center gap-3&quot;&gt;
+          &lt;div class=&quot;w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow&quot;&gt;
+            &lt;i class=&quot;fas fa-ruler text-white text-sm&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;div class=&quot;font-semibold text-sm text-blue-900&quot; id=&quot;bannerDist&quot;&gt;—&lt;/div&gt;
+            &lt;div class=&quot;text-xs text-blue-500&quot;&gt;from SkyDrop Hub, ISRO Ahmedabad&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex items-center gap-3&quot;&gt;
+          &lt;span class=&quot;text-sm text-blue-700 font-medium&quot;&gt;Delivery fee:&lt;/span&gt;
+          &lt;span class=&quot;font-display font-bold text-2xl text-blue-900&quot; id=&quot;bannerFee&quot;&gt;₹40&lt;/span&gt;
+          &lt;span id=&quot;bannerTier&quot; class=&quot;px-2.5 py-1 rounded-lg text-xs font-bold tier-free&quot;&gt;—&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;button onclick=&quot;openLocModal()&quot; class=&quot;text-xs text-blue-500 underline font-semibold hover:text-blue-700&quot;&gt;Change&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;flex justify-between items-center mb-6&quot;&gt;
+      &lt;h2 class=&quot;text-2xl font-display font-bold&quot; id=&quot;catTitle&quot;&gt;All Products&lt;/h2&gt;
+      &lt;select onchange=&quot;sortProds(this.value)&quot; class=&quot;bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-orange-400 outline-none&quot;&gt;
+        &lt;option value=&quot;default&quot;&gt;Popular&lt;/option&gt;
+        &lt;option value=&quot;asc&quot;&gt;Price: Low → High&lt;/option&gt;
+        &lt;option value=&quot;desc&quot;&gt;Price: High → Low&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4&quot; id=&quot;prodGrid&quot;&gt;&lt;/div&gt;
+
+    &lt;div id=&quot;noRes&quot; class=&quot;hidden text-center py-24&quot;&gt;
+      &lt;div class=&quot;w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4&quot;&gt;
+        &lt;i class=&quot;fas fa-search text-3xl text-gray-300&quot;&gt;&lt;/i&gt;
+      &lt;/div&gt;
+      &lt;p class=&quot;text-gray-400 text-lg font-medium mb-3&quot;&gt;Nothing found&lt;/p&gt;
+      &lt;button onclick=&quot;clearSearch()&quot; class=&quot;px-5 py-2 bg-orange-50 text-orange-600 rounded-full font-semibold hover:bg-orange-100 transition-all&quot;&gt;Clear search&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     WHY SKYDROP
+═══════════════════════════════════════════ --&gt;
+&lt;section class=&quot;py-20 bg-gray-950 text-white relative overflow-hidden&quot;&gt;
+  &lt;div class=&quot;absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(249,115,22,.18),transparent_60%)]&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,rgba(16,185,129,.1),transparent_60%)]&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;max-w-7xl mx-auto px-6 relative z-10&quot;&gt;
+    &lt;div class=&quot;text-center mb-14&quot;&gt;
+      &lt;h2 class=&quot;text-4xl font-display font-bold mb-3&quot;&gt;Why SkyDrop?&lt;/h2&gt;
+      &lt;p class=&quot;text-gray-400 max-w-xl mx-auto&quot;&gt;The future of grocery delivery is already here — above Gandhinagar's skyline.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;grid md:grid-cols-3 gap-6&quot;&gt;
+      &lt;div class=&quot;feature-card p-8 rounded-3xl&quot;&gt;
+        &lt;div class=&quot;w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-orange-500/20&quot;&gt;
+          &lt;i class=&quot;fas fa-route text-2xl text-white&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;h3 class=&quot;text-xl font-display font-bold mb-3&quot;&gt;AI Path Optimization&lt;/h3&gt;
+        &lt;p class=&quot;text-gray-400 text-sm leading-relaxed&quot;&gt;Google Maps powered routing computes the fastest, safest flight corridor in real-time. No traffic, no delays.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;feature-card p-8 rounded-3xl&quot;&gt;
+        &lt;div class=&quot;w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20&quot;&gt;
+          &lt;i class=&quot;fas fa-tags text-2xl text-white&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;h3 class=&quot;text-xl font-display font-bold mb-3&quot;&gt;Distance Pricing&lt;/h3&gt;
+        &lt;p class=&quot;text-gray-400 text-sm leading-relaxed&quot;&gt;Pay exactly what your delivery costs based on real flight distance. Free delivery under 2 km!&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;feature-card p-8 rounded-3xl&quot;&gt;
+        &lt;div class=&quot;w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20&quot;&gt;
+          &lt;i class=&quot;fas fa-shield-alt text-2xl text-white&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;h3 class=&quot;text-xl font-display font-bold mb-3&quot;&gt;DGCA Certified&lt;/h3&gt;
+        &lt;p class=&quot;text-gray-400 text-sm leading-relaxed&quot;&gt;Full clearance from India's Directorate General of Civil Aviation. Collision avoidance + precision landing.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     CART SIDEBAR
+═══════════════════════════════════════════ --&gt;
+&lt;div id=&quot;cartSidebar&quot; class=&quot;cart-sidebar fixed inset-y-0 right-0 z-50 w-full md:w-[400px] bg-white shadow-2xl translate-x-full flex flex-col&quot;&gt;
+  &lt;div class=&quot;p-5 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-white flex justify-between items-center&quot;&gt;
+    &lt;div&gt;
+      &lt;h2 class=&quot;text-lg font-display font-bold&quot;&gt;Your Cart&lt;/h2&gt;
+      &lt;p class=&quot;text-xs text-gray-400 mt-0.5&quot;&gt;Review before checkout&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button onclick=&quot;toggleCart()&quot; class=&quot;w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-all hover:rotate-90&quot;&gt;
+      &lt;i class=&quot;fas fa-times text-sm&quot;&gt;&lt;/i&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;flex-1 overflow-y-auto p-4 space-y-2.5&quot; id=&quot;cartBody&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;cartFoot&quot; class=&quot;hidden border-t border-gray-100 p-5 bg-gray-50&quot;&gt;
+    &lt;div class=&quot;space-y-2 text-sm mb-4&quot;&gt;
+      &lt;div class=&quot;flex justify-between&quot;&gt;&lt;span class=&quot;text-gray-500&quot;&gt;Subtotal&lt;/span&gt;&lt;span class=&quot;font-semibold&quot; id=&quot;cartSub&quot;&gt;₹0&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;flex justify-between text-blue-600&quot;&gt;&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;i class=&quot;fas fa-paper-plane text-xs&quot;&gt;&lt;/i&gt;Drone delivery&lt;/span&gt;&lt;span id=&quot;cartFee&quot;&gt;₹40&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;flex justify-between font-display font-bold text-base border-t border-gray-200 pt-3 mb-4&quot;&gt;
+      &lt;span&gt;Total&lt;/span&gt;&lt;span id=&quot;cartTotal&quot;&gt;₹0&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;button onclick=&quot;goCheckout()&quot; class=&quot;w-full py-3.5 btn-orange rounded-xl font-semibold shadow-md shadow-orange-100&quot;&gt;Proceed to Checkout&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     LOCATION MODAL
+═══════════════════════════════════════════ --&gt;
+&lt;div id=&quot;locModal&quot; class=&quot;fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4&quot;&gt;
+  &lt;div class=&quot;bg-white rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden modal-in&quot;&gt;
+    &lt;div class=&quot;p-5 border-b border-gray-100 flex justify-between items-center&quot;&gt;
+      &lt;div&gt;
+        &lt;h3 class=&quot;text-xl font-display font-bold&quot;&gt;Set Delivery Location&lt;/h3&gt;
+        &lt;p class=&quot;text-xs text-gray-400 mt-0.5&quot;&gt;Tap the map or search to pin your address&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button onclick=&quot;closeLocModal()&quot; class=&quot;w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-all&quot;&gt;
+        &lt;i class=&quot;fas fa-times text-sm&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-5 space-y-4&quot;&gt;
+      &lt;div class=&quot;relative&quot;&gt;
+        &lt;input id=&quot;locSearch&quot; type=&quot;text&quot; placeholder=&quot;Search area in Gandhinagar / Ahmedabad…&quot; class=&quot;auth-input pl-10&quot;&gt;
+        &lt;i class=&quot;fas fa-search absolute left-3.5 top-3.5 text-gray-400 text-sm&quot;&gt;&lt;/i&gt;
+      &lt;/div&gt;
+      &lt;!-- MAP --&gt;
+      &lt;div id=&quot;locationMap&quot; style=&quot;height:280px;background:#e5e7eb&quot; class=&quot;w-full rounded-2xl&quot;&gt;&lt;/div&gt;
+      &lt;!-- Distance info --&gt;
+      &lt;div id=&quot;distInfo&quot; class=&quot;hidden bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100 rounded-2xl p-4&quot;&gt;
+        &lt;div class=&quot;flex items-center justify-between flex-wrap gap-3&quot;&gt;
+          &lt;div&gt;
+            &lt;div class=&quot;font-semibold text-sm text-blue-900&quot;&gt;📍 &lt;span id=&quot;distTxt&quot;&gt;—&lt;/span&gt; from Hub&lt;/div&gt;
+            &lt;div class=&quot;text-xs text-blue-500 mt-0.5&quot; id=&quot;etaTxt&quot;&gt;ETA: —&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;text-right&quot;&gt;
+            &lt;div class=&quot;text-xs text-gray-400 mb-0.5&quot;&gt;Delivery fee&lt;/div&gt;
+            &lt;div class=&quot;text-2xl font-display font-bold text-blue-900&quot; id=&quot;calcFee&quot;&gt;₹40&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;tierMsg&quot; class=&quot;mt-2.5 text-xs text-blue-700 bg-blue-100 rounded-lg px-3 py-2&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button onclick=&quot;useMyLoc()&quot; class=&quot;w-full py-2.5 border-2 border-dashed border-orange-200 text-orange-600 rounded-xl font-semibold hover:bg-orange-50 transition-all flex items-center justify-center gap-2 text-sm&quot;&gt;
+        &lt;i class=&quot;fas fa-crosshairs&quot;&gt;&lt;/i&gt; Use My Current Location
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-5 border-t border-gray-100 bg-gray-50 flex gap-3&quot;&gt;
+      &lt;button onclick=&quot;closeLocModal()&quot; class=&quot;flex-1 py-2.5 bg-white border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition-all text-sm&quot;&gt;Cancel&lt;/button&gt;
+      &lt;button onclick=&quot;confirmLoc()&quot; id=&quot;confirmLocBtn&quot; disabled class=&quot;flex-[2] py-2.5 btn-orange rounded-xl font-semibold text-sm disabled:opacity-40&quot;&gt;Confirm Location&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     AUTH MODAL
+═══════════════════════════════════════════ --&gt;
+&lt;div id=&quot;authModal&quot; class=&quot;fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4&quot;&gt;
+  &lt;div class=&quot;bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden modal-in&quot;&gt;
+    &lt;div class=&quot;bg-gradient-to-br from-orange-500 to-orange-600 p-8 text-white text-center&quot;&gt;
+      &lt;div class=&quot;w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4&quot;&gt;
+        &lt;i class=&quot;fas fa-paper-plane text-3xl -rotate-12&quot;&gt;&lt;/i&gt;
+      &lt;/div&gt;
+      &lt;h2 class=&quot;text-2xl font-display font-bold&quot;&gt;Welcome to SkyDrop&lt;/h2&gt;
+      &lt;p class=&quot;text-orange-100 text-sm mt-1&quot;&gt;Gandhinagar's fastest delivery&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-6&quot;&gt;
+      &lt;div class=&quot;flex gap-6 mb-6 border-b border-gray-100&quot;&gt;
+        &lt;button class=&quot;auth-tab active&quot; id=&quot;tabLogin&quot; onclick=&quot;switchTab('login')&quot;&gt;Sign In&lt;/button&gt;
+        &lt;button class=&quot;auth-tab&quot; id=&quot;tabReg&quot; onclick=&quot;switchTab('register')&quot;&gt;Create Account&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;!-- Login --&gt;
+      &lt;div id=&quot;loginForm&quot; class=&quot;space-y-4&quot;&gt;
+        &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;Email&lt;/label&gt;&lt;input type=&quot;email&quot; id=&quot;liEmail&quot; placeholder=&quot;you@example.com&quot; class=&quot;auth-input&quot;&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;Password&lt;/label&gt;
+          &lt;div class=&quot;relative&quot;&gt;&lt;input type=&quot;password&quot; id=&quot;liPass&quot; placeholder=&quot;••••••••&quot; class=&quot;auth-input pr-10&quot;&gt;&lt;button onclick=&quot;togglePwd('liPass')&quot; class=&quot;absolute right-3 top-3 text-gray-400 hover:text-gray-600&quot;&gt;&lt;i class=&quot;fas fa-eye text-sm&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;liErr&quot; class=&quot;hidden text-red-600 text-sm bg-red-50 px-3 py-2.5 rounded-xl border border-red-100&quot;&gt;&lt;/div&gt;
+        &lt;button id=&quot;liBtn&quot; onclick=&quot;doLogin()&quot; class=&quot;w-full btn-orange py-3 rounded-xl font-semibold flex items-center justify-center gap-2&quot;&gt;&lt;i class=&quot;fas fa-sign-in-alt&quot;&gt;&lt;/i&gt; Sign In&lt;/button&gt;
+        &lt;div class=&quot;flex items-center gap-3&quot;&gt;&lt;div class=&quot;flex-1 h-px bg-gray-200&quot;&gt;&lt;/div&gt;&lt;span class=&quot;text-xs text-gray-400&quot;&gt;OR&lt;/span&gt;&lt;div class=&quot;flex-1 h-px bg-gray-200&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;button onclick=&quot;doGoogle()&quot; class=&quot;google-btn&quot;&gt;&lt;svg width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 18 18&quot;&gt;&lt;path fill=&quot;#4285F4&quot; d=&quot;M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z&quot;/&gt;&lt;path fill=&quot;#34A853&quot; d=&quot;M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z&quot;/&gt;&lt;path fill=&quot;#FBBC05&quot; d=&quot;M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z&quot;/&gt;&lt;path fill=&quot;#EA4335&quot; d=&quot;M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z&quot;/&gt;&lt;/svg&gt;Continue with Google&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;!-- Register --&gt;
+      &lt;div id=&quot;regForm&quot; class=&quot;space-y-4 hidden&quot;&gt;
+        &lt;div class=&quot;grid grid-cols-2 gap-3&quot;&gt;
+          &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;First Name&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;rgFirst&quot; placeholder=&quot;Arjun&quot; class=&quot;auth-input&quot;&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;Last Name&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;rgLast&quot; placeholder=&quot;Patel&quot; class=&quot;auth-input&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;Email&lt;/label&gt;&lt;input type=&quot;email&quot; id=&quot;rgEmail&quot; placeholder=&quot;you@example.com&quot; class=&quot;auth-input&quot;&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;Phone&lt;/label&gt;&lt;input type=&quot;tel&quot; id=&quot;rgPhone&quot; placeholder=&quot;+91 98765 43210&quot; class=&quot;auth-input&quot;&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;label class=&quot;block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide&quot;&gt;Password&lt;/label&gt;
+          &lt;div class=&quot;relative&quot;&gt;&lt;input type=&quot;password&quot; id=&quot;rgPass&quot; placeholder=&quot;Min. 6 characters&quot; class=&quot;auth-input pr-10&quot;&gt;&lt;button onclick=&quot;togglePwd('rgPass')&quot; class=&quot;absolute right-3 top-3 text-gray-400 hover:text-gray-600&quot;&gt;&lt;i class=&quot;fas fa-eye text-sm&quot;&gt;&lt;/i&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;rgErr&quot; class=&quot;hidden text-red-600 text-sm bg-red-50 px-3 py-2.5 rounded-xl border border-red-100&quot;&gt;&lt;/div&gt;
+        &lt;button id=&quot;rgBtn&quot; onclick=&quot;doRegister()&quot; class=&quot;w-full btn-orange py-3 rounded-xl font-semibold flex items-center justify-center gap-2&quot;&gt;&lt;i class=&quot;fas fa-user-plus&quot;&gt;&lt;/i&gt; Create Account&lt;/button&gt;
+        &lt;div class=&quot;flex items-center gap-3&quot;&gt;&lt;div class=&quot;flex-1 h-px bg-gray-200&quot;&gt;&lt;/div&gt;&lt;span class=&quot;text-xs text-gray-400&quot;&gt;OR&lt;/span&gt;&lt;div class=&quot;flex-1 h-px bg-gray-200&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;button onclick=&quot;doGoogle()&quot; class=&quot;google-btn&quot;&gt;&lt;svg width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 18 18&quot;&gt;&lt;path fill=&quot;#4285F4&quot; d=&quot;M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z&quot;/&gt;&lt;path fill=&quot;#34A853&quot; d=&quot;M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z&quot;/&gt;&lt;path fill=&quot;#FBBC05&quot; d=&quot;M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z&quot;/&gt;&lt;path fill=&quot;#EA4335&quot; d=&quot;M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z&quot;/&gt;&lt;/svg&gt;Sign up with Google&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;text-center p-4 border-t border-gray-100&quot;&gt;
+      &lt;button onclick=&quot;closeAuthModal()&quot; class=&quot;text-xs text-gray-400 hover:text-gray-600 font-medium&quot;&gt;Continue as guest →&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     ORDER SUMMARY MODAL
+═══════════════════════════════════════════ --&gt;
+&lt;div id=&quot;summaryModal&quot; class=&quot;fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4&quot;&gt;
+  &lt;div class=&quot;bg-white rounded-3xl max-w-md w-full shadow-2xl max-h-[92vh] overflow-y-auto modal-in&quot;&gt;
+    &lt;div class=&quot;sticky top-0 bg-white p-5 border-b border-gray-100 flex justify-between items-center&quot;&gt;
+      &lt;div&gt;&lt;h3 class=&quot;text-xl font-display font-bold&quot;&gt;Order Summary&lt;/h3&gt;&lt;p class=&quot;text-xs text-gray-400&quot;&gt;Review before payment&lt;/p&gt;&lt;/div&gt;
+      &lt;button onclick=&quot;closeSummary()&quot; class=&quot;w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all&quot;&gt;&lt;i class=&quot;fas fa-times text-sm&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-5 space-y-4&quot;&gt;
+      &lt;div id=&quot;summItems&quot; class=&quot;space-y-2 max-h-44 overflow-y-auto&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;border-t-2 border-dashed border-gray-100 pt-4 space-y-3 text-sm&quot;&gt;
+        &lt;div class=&quot;flex justify-between&quot;&gt;&lt;span class=&quot;text-gray-500 flex items-center gap-2&quot;&gt;&lt;i class=&quot;fas fa-box text-orange-400 text-xs&quot;&gt;&lt;/i&gt;Items&lt;/span&gt;&lt;span class=&quot;font-semibold&quot; id=&quot;sItemsT&quot;&gt;₹0&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;flex justify-between&quot;&gt;&lt;span class=&quot;text-gray-500 flex items-center gap-2&quot;&gt;&lt;i class=&quot;fas fa-paper-plane text-orange-400 text-xs&quot;&gt;&lt;/i&gt;Drone delivery &lt;span id=&quot;sDelBadge&quot; class=&quot;text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold ml-1&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;font-semibold&quot; id=&quot;sDel&quot;&gt;₹40&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;flex justify-between&quot;&gt;&lt;span class=&quot;text-gray-500 flex items-center gap-2&quot;&gt;&lt;i class=&quot;fas fa-gift text-orange-400 text-xs&quot;&gt;&lt;/i&gt;Packaging&lt;/span&gt;&lt;span class=&quot;font-semibold&quot;&gt;₹15&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;flex justify-between text-green-600&quot;&gt;&lt;span class=&quot;flex items-center gap-2&quot;&gt;&lt;i class=&quot;fas fa-tag text-xs&quot;&gt;&lt;/i&gt;New user discount&lt;/span&gt;&lt;span class=&quot;font-semibold&quot;&gt;-₹25&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;flex justify-between&quot;&gt;&lt;span class=&quot;text-gray-500&quot;&gt;GST (5%)&lt;/span&gt;&lt;span class=&quot;font-semibold&quot; id=&quot;sGst&quot;&gt;₹0&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl p-4 border-2 border-orange-200 flex justify-between items-center&quot;&gt;
+        &lt;div&gt;&lt;div class=&quot;font-display font-bold text-orange-900&quot;&gt;Grand Total&lt;/div&gt;&lt;div class=&quot;text-xs text-orange-600&quot;&gt;All taxes included&lt;/div&gt;&lt;/div&gt;
+        &lt;span class=&quot;text-2xl font-display font-bold text-orange-900&quot; id=&quot;sGrandT&quot;&gt;₹0&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;bg-gray-50 rounded-xl p-4 space-y-2 text-sm&quot;&gt;
+        &lt;div class=&quot;flex items-center gap-2 text-gray-600&quot;&gt;&lt;i class=&quot;fas fa-map-marker-alt text-orange-400 w-4 text-center&quot;&gt;&lt;/i&gt;&lt;span id=&quot;sAddr&quot;&gt;Gandhinagar&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;flex items-center gap-2 text-gray-600&quot;&gt;&lt;i class=&quot;fas fa-ruler text-orange-400 w-4 text-center&quot;&gt;&lt;/i&gt;&lt;span id=&quot;sDist&quot;&gt;—&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;flex items-center gap-2 text-gray-600&quot;&gt;&lt;i class=&quot;fas fa-clock text-orange-400 w-4 text-center&quot;&gt;&lt;/i&gt;&lt;span&gt;Estimated 8–15 min&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-5 border-t border-gray-100 bg-gray-50 space-y-3&quot;&gt;
+      &lt;button onclick=&quot;openPayment()&quot; class=&quot;w-full py-3.5 btn-orange rounded-xl font-semibold flex items-center justify-center gap-2&quot;&gt;Continue to Payment &lt;i class=&quot;fas fa-arrow-right text-sm&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+      &lt;button onclick=&quot;closeSummary()&quot; class=&quot;w-full py-3 bg-white border border-gray-200 text-gray-600 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-all&quot;&gt;Edit Cart&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     PAYMENT MODAL
+═══════════════════════════════════════════ --&gt;
+&lt;div id=&quot;payModal&quot; class=&quot;fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4&quot;&gt;
+  &lt;div class=&quot;bg-white rounded-3xl max-w-md w-full shadow-2xl modal-in&quot;&gt;
+    &lt;div class=&quot;p-5 border-b border-gray-100 flex justify-between items-center&quot;&gt;
+      &lt;div&gt;&lt;h3 class=&quot;text-xl font-display font-bold&quot;&gt;Payment&lt;/h3&gt;&lt;p class=&quot;text-xs text-gray-400&quot;&gt;Choose your method&lt;/p&gt;&lt;/div&gt;
+      &lt;button onclick=&quot;closePayment()&quot; class=&quot;w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all&quot;&gt;&lt;i class=&quot;fas fa-times text-sm&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-5 space-y-3&quot;&gt;
+      &lt;div class=&quot;pay-method p-4 rounded-xl&quot; onclick=&quot;pickPay('upi')&quot;&gt;
+        &lt;div class=&quot;flex items-center gap-4&quot;&gt;&lt;div class=&quot;w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center&quot;&gt;&lt;i class=&quot;fas fa-qrcode text-purple-600 text-xl&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;div class=&quot;flex-1&quot;&gt;&lt;div class=&quot;font-semibold text-sm&quot;&gt;UPI / QR Code&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot;&gt;Google Pay · PhonePe · Paytm&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center pay-radio&quot; data-m=&quot;upi&quot;&gt;&lt;div class=&quot;w-2.5 h-2.5 rounded-full bg-orange-500 hidden&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;pay-method p-4 rounded-xl&quot; onclick=&quot;pickPay('card')&quot;&gt;
+        &lt;div class=&quot;flex items-center gap-4&quot;&gt;&lt;div class=&quot;w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center&quot;&gt;&lt;i class=&quot;fas fa-credit-card text-blue-600 text-xl&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;div class=&quot;flex-1&quot;&gt;&lt;div class=&quot;font-semibold text-sm&quot;&gt;Credit / Debit Card&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot;&gt;Visa · Mastercard · RuPay&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center pay-radio&quot; data-m=&quot;card&quot;&gt;&lt;div class=&quot;w-2.5 h-2.5 rounded-full bg-orange-500 hidden&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;pay-method p-4 rounded-xl&quot; onclick=&quot;pickPay('cod')&quot;&gt;
+        &lt;div class=&quot;flex items-center gap-4&quot;&gt;&lt;div class=&quot;w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center&quot;&gt;&lt;i class=&quot;fas fa-money-bill-wave text-green-600 text-xl&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;div class=&quot;flex-1&quot;&gt;&lt;div class=&quot;font-semibold text-sm&quot;&gt;Cash on Delivery&lt;/div&gt;&lt;div class=&quot;text-xs text-gray-400&quot;&gt;Pay when drone arrives&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center pay-radio&quot; data-m=&quot;cod&quot;&gt;&lt;div class=&quot;w-2.5 h-2.5 rounded-full bg-orange-500 hidden&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;p-5 border-t border-gray-100 bg-gray-50&quot;&gt;
+      &lt;div class=&quot;flex justify-between items-center mb-4&quot;&gt;&lt;span class=&quot;text-gray-600 font-medium text-sm&quot;&gt;Amount to pay&lt;/span&gt;&lt;span class=&quot;text-xl font-display font-bold&quot; id=&quot;payAmt&quot;&gt;₹0&lt;/span&gt;&lt;/div&gt;
+      &lt;button id=&quot;payBtn&quot; onclick=&quot;confirmPay()&quot; disabled class=&quot;w-full py-3.5 btn-orange rounded-xl font-semibold flex items-center justify-center gap-2 disabled:opacity-40&quot;&gt;Confirm &amp;amp; Place Order &lt;i class=&quot;fas fa-lock text-xs&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════
+     CONFIRMED MODAL
+═══════════════════════════════════════════ --&gt;
+&lt;div id=&quot;doneModal&quot; class=&quot;fixed inset-0 z-50 hidden modal-bg flex items-center justify-center p-4&quot;&gt;
+  &lt;div class=&quot;bg-white rounded-3xl max-w-md w-full p-8 text-center shadow-2xl modal-in&quot;&gt;
+    &lt;div class=&quot;w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-green-300/40&quot;&gt;
+      &lt;i class=&quot;fas fa-check text-3xl text-white&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;h3 class=&quot;text-2xl font-display font-bold mb-1&quot;&gt;Order Confirmed!&lt;/h3&gt;
+    &lt;p class=&quot;text-gray-400 mb-6 text-sm&quot;&gt;Your drone is preparing for takeoff 🚁&lt;/p&gt;
+    &lt;div class=&quot;bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 border border-orange-200 text-left space-y-2.5 mb-5&quot;&gt;
+      &lt;div class=&quot;flex justify-between text-sm&quot;&gt;&lt;span class=&quot;text-gray-500&quot;&gt;Order ID&lt;/span&gt;&lt;span class=&quot;font-mono font-bold text-orange-700&quot; id=&quot;orderId&quot;&gt;—&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;flex justify-between text-sm&quot;&gt;&lt;span class=&quot;text-gray-500&quot;&gt;Payment&lt;/span&gt;&lt;span class=&quot;font-semibold&quot; id=&quot;orderPay&quot;&gt;—&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;flex justify-between text-sm&quot;&gt;&lt;span class=&quot;text-gray-500&quot;&gt;Distance&lt;/span&gt;&lt;span class=&quot;font-semibold&quot; id=&quot;orderDist&quot;&gt;—&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;flex justify-between font-display font-bold pt-2 border-t border-orange-200&quot;&gt;
+        &lt;span&gt;Total Paid&lt;/span&gt;&lt;span id=&quot;orderTotal&quot;&gt;₹0&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-5 flex items-center gap-3&quot;&gt;
+      &lt;div class=&quot;w-3 h-3 bg-emerald-500 rounded-full animate-pulse flex-shrink-0&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;text-left&quot;&gt;
+        &lt;div class=&quot;font-display font-bold text-emerald-800 text-sm&quot;&gt;Drone is airborne!&lt;/div&gt;
+        &lt;div class=&quot;text-xs text-emerald-600&quot;&gt;Departed from ISRO Hub, Ahmedabad&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button onclick=&quot;startTracking()&quot; class=&quot;w-full py-3.5 btn-orange rounded-xl font-semibold flex items-center justify-center gap-2 mb-3 shadow-md shadow-orange-200&quot;&gt;
+      &lt;i class=&quot;fas fa-map-marked-alt&quot;&gt;&lt;/i&gt; Track Live Location
+    &lt;/button&gt;
+    &lt;button onclick=&quot;closeDone()&quot; class=&quot;w-full py-2.5 text-gray-400 hover:text-gray-600 text-sm font-medium transition-colors&quot;&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- User dropdown --&gt;
+&lt;div id=&quot;userDrop&quot; class=&quot;fixed top-16 right-4 z-50 hidden bg-white rounded-2xl shadow-2xl border border-gray-100 w-60 overflow-hidden modal-in&quot;&gt;
+  &lt;div class=&quot;p-4 bg-gradient-to-r from-orange-50 to-white border-b border-orange-100&quot;&gt;
+    &lt;div class=&quot;flex items-center gap-3&quot;&gt;
+      &lt;div id=&quot;dropAvatar&quot; class=&quot;user-avatar text-sm&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;min-w-0&quot;&gt;&lt;div id=&quot;dropName&quot; class=&quot;font-display font-bold text-sm truncate&quot;&gt;&lt;/div&gt;&lt;div id=&quot;dropEmail&quot; class=&quot;text-xs text-gray-400 truncate&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;p-2&quot;&gt;
+    &lt;button class=&quot;w-full flex items-center gap-3 px-3 py-2.5 text-sm hover:bg-gray-50 rounded-xl text-gray-700 font-medium transition-all&quot;&gt;&lt;i class=&quot;fas fa-shopping-bag text-orange-400 w-4 text-center&quot;&gt;&lt;/i&gt;My Orders&lt;/button&gt;
+    &lt;button class=&quot;w-full flex items-center gap-3 px-3 py-2.5 text-sm hover:bg-gray-50 rounded-xl text-gray-700 font-medium transition-all&quot;&gt;&lt;i class=&quot;fas fa-map-marker-alt text-orange-400 w-4 text-center&quot;&gt;&lt;/i&gt;Saved Addresses&lt;/button&gt;
+    &lt;div class=&quot;border-t border-gray-100 my-1&quot;&gt;&lt;/div&gt;
+    &lt;button onclick=&quot;doSignOut()&quot; class=&quot;w-full flex items-center gap-3 px-3 py-2.5 text-sm hover:bg-red-50 rounded-xl text-red-500 font-medium transition-all&quot;&gt;&lt;i class=&quot;fas fa-sign-out-alt w-4 text-center&quot;&gt;&lt;/i&gt;Sign Out&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Toast --&gt;
+&lt;div id=&quot;toast&quot; class=&quot;toast fixed bottom-6 right-6 translate-y-24 opacity-0 z-50&quot;&gt;
+  &lt;div class=&quot;bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 min-w-[200px]&quot;&gt;
+    &lt;i id=&quot;toastIco&quot; class=&quot;fas fa-check-circle text-green-400 text-base&quot;&gt;&lt;/i&gt;
+    &lt;span id=&quot;toastTxt&quot; class=&quot;font-medium text-sm&quot;&gt;Done&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ═══════════════════════════════════════════════════════════
+     FIREBASE MODULE
+═══════════════════════════════════════════════════════════ --&gt;
+&lt;script type=&quot;module&quot;&gt;
+import { initializeApp }                                    from &quot;https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js&quot;;
+import { getAnalytics }                                     from &quot;https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js&quot;;
+import { getAuth, createUserWithEmailAndPassword,
+         signInWithEmailAndPassword, signOut,
+         onAuthStateChanged, GoogleAuthProvider,
+         signInWithPopup, updateProfile }                   from &quot;https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js&quot;;
+import { getFirestore, doc, setDoc,
+         collection, addDoc, serverTimestamp }               from &quot;https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js&quot;;
+
+const cfg = {
+  apiKey:&quot;AIzaSyD9sDCuZFAsGM98fe82E5DDk1WcQdHLU6M&quot;,
+  authDomain:&quot;skydrop-28888.firebaseapp.com&quot;,
+  projectId:&quot;skydrop-28888&quot;,
+  storageBucket:&quot;skydrop-28888.firebasestorage.app&quot;,
+  messagingSenderId:&quot;1026404031265&quot;,
+  appId:&quot;1:1026404031265:web:a03b54d63cc1dc22c83c60&quot;,
+  measurementId:&quot;G-X9JQTFRS84&quot;
+};
+const app  = initializeApp(cfg);
+getAnalytics(app);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const gp   = new GoogleAuthProvider();
+
+function fe(code){
+  return({
+    'auth/user-not-found':       'No account with that email.',
+    'auth/wrong-password':       'Wrong password.',
+    'auth/invalid-credential':   'Invalid email or password.',
+    'auth/email-already-in-use': 'Email already registered.',
+    'auth/invalid-email':        'Invalid email address.',
+    'auth/weak-password':        'Password must be ≥ 6 characters.',
+    'auth/too-many-requests':    'Too many attempts. Try later.',
+    'auth/operation-not-allowed':'Email/password sign-in not enabled in Firebase Console.',
+    'auth/configuration-not-found':'Add this domain in Firebase Console → Auth → Authorized Domains.',
+  })[code]||`Auth error: ${code}`;
+}
+function sb(id,on,off){const b=document.getElementById(id);if(!b)return;b.disabled=on;b.innerHTML=on?'&lt;i class=&quot;fas fa-spinner spinner-icon&quot;&gt;&lt;/i&gt; Please wait…':off}
+function se(id,m){const e=document.getElementById(id);if(!e)return;e.textContent=m;e.classList.remove('hidden')}
+function he(id){document.getElementById(id)?.classList.add('hidden')}
+
+onAuthStateChanged(auth, u=&gt;{
+  window._user=u||null;
+  u ? window.renderIn(u) : window.renderOut();
+});
+
+window.doLogin=async()=&gt;{
+  const email=document.getElementById('liEmail').value.trim();
+  const pass=document.getElementById('liPass').value;
+  he('liErr');
+  if(!email||!pass){se('liErr','Please fill all fields.');return}
+  sb('liBtn',true,'&lt;i class=&quot;fas fa-sign-in-alt&quot;&gt;&lt;/i&gt; Sign In');
+  try{await signInWithEmailAndPassword(auth,email,pass);closeAuthModal();toast('Welcome back! 🎉')}
+  catch(e){se('liErr',fe(e.code))}
+  sb('liBtn',false,'&lt;i class=&quot;fas fa-sign-in-alt&quot;&gt;&lt;/i&gt; Sign In');
+};
+window.doRegister=async()=&gt;{
+  const first=document.getElementById('rgFirst').value.trim();
+  const last=document.getElementById('rgLast').value.trim();
+  const email=document.getElementById('rgEmail').value.trim();
+  const phone=document.getElementById('rgPhone').value.trim();
+  const pass=document.getElementById('rgPass').value;
+  he('rgErr');
+  if(!first||!email||!pass){se('rgErr','Please fill required fields.');return}
+  if(pass.length&lt;6){se('rgErr','Password must be ≥ 6 characters.');return}
+  sb('rgBtn',true,'&lt;i class=&quot;fas fa-user-plus&quot;&gt;&lt;/i&gt; Create Account');
+  try{
+    const c=await createUserWithEmailAndPassword(auth,email,pass);
+    await updateProfile(c.user,{displayName:`${first} ${last}`.trim()});
+    await setDoc(doc(db,'users',c.user.uid),{firstName:first,lastName:last,email,phone,createdAt:serverTimestamp(),role:'customer'});
+    closeAuthModal();toast(`Welcome, ${first}! 🚀`);
+  }catch(e){se('rgErr',fe(e.code))}
+  sb('rgBtn',false,'&lt;i class=&quot;fas fa-user-plus&quot;&gt;&lt;/i&gt; Create Account');
+};
+
+window.doGoogle=async()=&gt;{
+  try{
+    const r=await signInWithPopup(auth,gp);
+    await setDoc(doc(db,'users',r.user.uid),{displayName:r.user.displayName,email:r.user.email,photoURL:r.user.photoURL||'',updatedAt:serverTimestamp()},{merge:true});
+    closeAuthModal();toast(`Welcome, ${r.user.displayName?.split(' ')[0]||'there'}! 🎉`);
+  }catch(e){if(e.code!=='auth/popup-closed-by-user')toast('Google sign-in failed.','err')}
+};
+
+window.doSignOut=async()=&gt;{
+  await signOut(auth);
+  document.getElementById('userDrop').classList.add('hidden');
+  toast('Signed out');
+};
+
+window.saveOrder=async(o)=&gt;{
+  if(!window._user)return;
+  try{await addDoc(collection(db,'orders'),{...o,userId:window._user.uid,createdAt:serverTimestamp()})}
+  catch(e){console.warn('Firestore:',e.message)}
+};
+&lt;/script&gt;
+
+&lt;!-- ═══════════════════════════════════════════════════════════
+     MAIN APP SCRIPT
+═══════════════════════════════════════════════════════════ --&gt;
+&lt;script&gt;
+// ── Constants ──────────────────────────────────────────────
+// Hub: ISRO Space Applications Centre, Ahmedabad (real location, ~18km from Gandhinagar centre)
+const HUB_LAT = 23.0332, HUB_LNG = 72.5618;
+const HUB_NAME = 'ISRO SAC, Ahmedabad';
+
+// ── Products — only items with guaranteed Unsplash IDs ──────
+const CATS = [
+  {id:'all',    name:'All',        icon:'fa-th-large'},
+  {id:'veg',    name:'Vegetables', icon:'fa-carrot'},
+  {id:'fruit',  name:'Fruits',     icon:'fa-apple-alt'},
+  {id:'dairy',  name:'Dairy',      icon:'fa-cheese'},
+  {id:'grocery',name:'Grocery',    icon:'fa-shopping-basket'},
+  {id:'pharma', name:'Pharmacy',   icon:'fa-pills'},
+  {id:'drinks', name:'Drinks',     icon:'fa-coffee'},
+];
+
+const PRODUCTS = [
+  // Vegetables — clean, iconic Unsplash photos
+  {id:1, name:'Tomatoes',    cat:'veg',    price:42,  unit:'500 g',    img:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:2, name:'Onions',      cat:'veg',    price:35,  unit:'1 kg',     img:'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:3, name:'Potatoes',    cat:'veg',    price:38,  unit:'1 kg',     img:'https://images.unsplash.com/photo-1508313880080-c4bef0730395?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:4, name:'Carrots',     cat:'veg',    price:50,  unit:'500 g',    img:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:5, name:'Broccoli',    cat:'veg',    price:70,  unit:'1 head',   img:'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:6, name:'Capsicum',    cat:'veg',    price:60,  unit:'3 pcs',    img:'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+
+  // Fruits
+  {id:7, name:'Bananas',     cat:'fruit',  price:60,  unit:'12 pcs',   img:'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:8, name:'Apples',      cat:'fruit',  price:180, unit:'1 kg',     img:'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:9, name:'Mangoes',     cat:'fruit',  price:200, unit:'1 kg',     img:'https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:10,name:'Oranges',     cat:'fruit',  price:120, unit:'1 kg',     img:'https://images.unsplash.com/photo-1547514701-42782101795e?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:11,name:'Strawberries',cat:'fruit',  price:150, unit:'250 g',    img:'https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:12,name:'Grapes',      cat:'fruit',  price:130, unit:'500 g',    img:'https://images.unsplash.com/photo-1537640538965-1756cd58090e?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+
+  // Dairy
+  {id:13,name:'Eggs',        cat:'dairy',  price:90,  unit:'12 pcs',   img:'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:14,name:'Milk',        cat:'dairy',  price:68,  unit:'1 L',      img:'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:15,name:'Butter',      cat:'dairy',  price:55,  unit:'200 g',    img:'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:16,name:'Cheddar Cheese',cat:'dairy',price:125, unit:'200 g',    img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:17,name:'Yoghurt',     cat:'dairy',  price:45,  unit:'400 g',    img:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+
+  // Grocery
+  {id:18,name:'Basmati Rice',cat:'grocery',price:120, unit:'1 kg',     img:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:19,name:'Bread',       cat:'grocery',price:40,  unit:'1 loaf',   img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:20,name:'Olive Oil',   cat:'grocery',price:320, unit:'500 ml',   img:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:21,name:'Pasta',       cat:'grocery',price:85,  unit:'500 g',    img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:22,name:'Oats',        cat:'grocery',price:95,  unit:'500 g',    img:'https://images.unsplash.com/photo-1614961233913-a5113a4a34ed?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+
+  // Pharmacy
+  {id:23,name:'Paracetamol', cat:'pharma', price:25,  unit:'10 tabs',  img:'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:24,name:'Hand Sanitizer',cat:'pharma',price:85, unit:'500 ml',   img:'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:25,name:'Vitamin C',   cat:'pharma', price:150, unit:'30 tabs',  img:'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:26,name:'Thermometer', cat:'pharma', price:250, unit:'1 pc',     img:'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+
+  // Drinks
+  {id:27,name:'Coffee',      cat:'drinks', price:180, unit:'200 g',    img:'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:28,name:'Green Tea',   cat:'drinks', price:140, unit:'25 bags',  img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:29,name:'Orange Juice',cat:'drinks', price:95,  unit:'1 L',      img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+  {id:30,name:'Coconut Water',cat:'drinks',price:55,  unit:'200 ml',   img:'https://images.unsplash.com/photo-1536657464919-892534f60d6e?w=400&amp;h=400&amp;fit=crop&amp;crop=center'},
+];
+
+// ── State ───────────────────────────────────────────────────
+let cart=[], activeCat='all', searchQ='', sortMode='default';
+let deliveryFee=40, custLat=null, custLng=null;
+let custAddr='Gandhinagar', distKm=0;
+let selectedPay=null, grandTotal=0;
+let pendingLoc=null;
+let locMap=null, locMarker=null;
+let trackingMap=null, droneMarker=null, droneTimer=null;
+
+// ── Delivery pricing ────────────────────────────────────────
+function feeForKm(km){
+  if(km&lt;=0)  return{fee:40,tier:'default',label:'Standard'};
+  if(km&lt;=2)  return{fee:0, tier:'free',   label:'Free  ≤2 km'};
+  if(km&lt;=5)  return{fee:20,tier:'low',    label:'Near  2–5 km'};
+  if(km&lt;=10) return{fee:40,tier:'mid',    label:'Mid  5–10 km'};
+  if(km&lt;=18) return{fee:65,tier:'high',   label:'Far 10–18 km'};
+  return       {fee:90,tier:'high',   label:'Extended &gt;18 km'};
+}
+function tierCls(t){return{free:'tier-free',low:'tier-low',mid:'tier-mid',high:'tier-high',default:'tier-mid'}[t]||'tier-mid'}
+function feeMsg(t,km){
+  return{
+    free:`🎉 You're within 2 km — FREE delivery!`,
+    low: `✅ ${km.toFixed(1)} km away — just ₹20.`,
+    mid: `📦 ${km.toFixed(1)} km — standard ₹40.`,
+    high:`🚁 ${km.toFixed(1)} km — extended range ₹65–90.`,
+    default:`Standard zone.`
+  }[t]||'';}
+
+// ── Haversine ───────────────────────────────────────────────
+function haversine(la1,lo1,la2,lo2){
+  const R=6371, dLa=(la2-la1)*Math.PI/180, dLo=(lo2-lo1)*Math.PI/180;
+  const a=Math.sin(dLa/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+// ── Init ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=&gt;{
+  renderCats(); renderProds();
+  document.getElementById('searchInput').addEventListener('input',e=&gt;{searchQ=e.target.value.toLowerCase();renderProds()});
+  document.getElementById('locChip').classList.remove('hidden');
+});
+
+// ── Auth UI (called from module) ────────────────────────────
+window.renderIn=function(u){
+  const name=u.displayName||u.email.split('@')[0];
+  const init=name.split(' ').map(n=&gt;n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('authArea').innerHTML=`
+    &lt;div class=&quot;flex items-center gap-2 cursor-pointer&quot; onclick=&quot;toggleDrop()&quot;&gt;
+      ${u.photoURL?`&lt;img src=&quot;${u.photoURL}&quot; class=&quot;user-avatar p-0 object-cover w-9 h-9 rounded-full&quot; onerror=&quot;this.outerHTML='&lt;div class=user-avatar&gt;${init}&lt;/div&gt;'&quot;&gt;`:`&lt;div class=&quot;user-avatar&quot;&gt;${init}&lt;/div&gt;`}
+      &lt;span class=&quot;hidden md:block text-sm font-semibold text-gray-700 max-w-[90px] truncate&quot;&gt;${name.split(' ')[0]}&lt;/span&gt;
+    &lt;/div&gt;`;
+  document.getElementById('dropName').textContent=name;
+  document.getElementById('dropEmail').textContent=u.email;
+  document.getElementById('dropAvatar').textContent=init;
+};
+window.renderOut=function(){
+  document.getElementById('authArea').innerHTML=`&lt;button onclick=&quot;openAuthModal()&quot; class=&quot;btn-orange px-4 py-2 rounded-full text-sm font-semibold&quot;&gt;&lt;i class=&quot;fas fa-user mr-1.5&quot;&gt;&lt;/i&gt;Sign In&lt;/button&gt;`;
+};
+function toggleDrop(){document.getElementById('userDrop').classList.toggle('hidden')}
+window.toggleDrop=toggleDrop;
+document.addEventListener('click',e=&gt;{
+  const d=document.getElementById('userDrop');
+  if(d&amp;&amp;!d.contains(e.target)&amp;&amp;!e.target.closest('[onclick=&quot;toggleDrop()&quot;]'))d.classList.add('hidden');
+});
+
+// ── Toast ───────────────────────────────────────────────────
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastTxt').textContent=msg;
+  document.getElementById('toastIco').className=type==='err'
+    ?'fas fa-exclamation-circle text-red-400 text-base'
+    :'fas fa-check-circle text-green-400 text-base';
+  t.classList.remove('translate-y-24','opacity-0');
+  clearTimeout(window._tt);
+  window._tt=setTimeout(()=&gt;t.classList.add('translate-y-24','opacity-0'),3200);
+}
+window.toast=toast;
+
+// ── Categories ──────────────────────────────────────────────
+function renderCats(){
+  document.getElementById('catRow').innerHTML=CATS.map(c=&gt;`
+    &lt;button onclick=&quot;setCat('${c.id}')&quot; class=&quot;cat-pill px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium text-sm flex items-center gap-2 ${activeCat===c.id?'active':''}&quot;&gt;
+      &lt;i class=&quot;fas ${c.icon} text-xs&quot;&gt;&lt;/i&gt;${c.name}
+    &lt;/button&gt;`).join('');
+}
+window.setCat=function(id){
+  activeCat=id;
+  document.getElementById('catTitle').textContent=CATS.find(c=&gt;c.id===id).name;
+  renderCats(); renderProds();
+};
+
+// ── Products ────────────────────────────────────────────────
+function renderProds(){
+  let list=PRODUCTS.filter(p=&gt;(activeCat==='all'||p.cat===activeCat)&amp;&amp;p.name.toLowerCase().includes(searchQ));
+  if(sortMode==='asc')  list=[...list].sort((a,b)=&gt;a.price-b.price);
+  if(sortMode==='desc') list=[...list].sort((a,b)=&gt;b.price-a.price);
+  const grid=document.getElementById('prodGrid');
+  const noR=document.getElementById('noRes');
+  if(!list.length){grid.innerHTML='';noR.classList.remove('hidden');return}
+  noR.classList.add('hidden');
+  grid.innerHTML=list.map(p=&gt;`
+    &lt;div class=&quot;product-card rounded-2xl p-3.5 cursor-pointer group&quot; onclick=&quot;addItem(${p.id})&quot;&gt;
+      &lt;div class=&quot;relative overflow-hidden rounded-xl mb-3 aspect-square img-bg&quot;&gt;
+        &lt;img src=&quot;${p.img}&quot; alt=&quot;${p.name}&quot; loading=&quot;lazy&quot;
+          class=&quot;w-full h-full object-cover group-hover:scale-110 transition-transform duration-500&quot;
+          onerror=&quot;this.style.display='none';this.parentNode.innerHTML+='&lt;div class=\'w-full h-full flex items-center justify-center text-4xl\'&gt;${p.cat==='fruit'?'🍎':p.cat==='veg'?'🥕':p.cat==='dairy'?'🥛':p.cat==='pharma'?'💊':p.cat==='drinks'?'☕':'🛒'}&lt;/div&gt;'&quot;&gt;
+        &lt;div class=&quot;absolute bottom-2 right-2 w-9 h-9 bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg add-btn&quot;&gt;
+          &lt;i class=&quot;fas fa-plus text-xs&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm&quot;&gt;10 min&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;h3 class=&quot;font-display font-bold text-gray-900 text-sm mb-0.5 truncate&quot;&gt;${p.name}&lt;/h3&gt;
+      &lt;p class=&quot;text-xs text-gray-400 mb-2&quot;&gt;${p.unit}&lt;/p&gt;
+      &lt;div class=&quot;flex justify-between items-center&quot;&gt;
+        &lt;span class=&quot;font-display font-bold text-gray-900&quot;&gt;₹${p.price}&lt;/span&gt;
+        &lt;button class=&quot;w-8 h-8 bg-orange-50 hover:bg-orange-500 hover:text-white text-orange-500 rounded-full flex items-center justify-center transition-all text-xs font-bold&quot; onclick=&quot;event.stopPropagation();addItem(${p.id})&quot;&gt;+&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;`).join('');
+}
+window.sortProds=function(v){sortMode=v;renderProds()};
+window.clearSearch=function(){document.getElementById('searchInput').value='';searchQ='';renderProds()};
+
+// ── Cart ────────────────────────────────────────────────────
+window.addItem=function(id){
+  const p=PRODUCTS.find(x=&gt;x.id===id);
+  const ex=cart.find(x=&gt;x.id===id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  syncCart(); toast(`${p.name} added ✓`);
+};
+window.chgQty=function(id,d){
+  const i=cart.find(x=&gt;x.id===id);
+  if(!i)return; i.qty+=d;
+  if(i.qty&lt;=0)cart=cart.filter(x=&gt;x.id!==id);
+  syncCart();
+};
+function syncCart(){
+  const qty=cart.reduce((s,i)=&gt;s+i.qty,0);
+  const sub=cart.reduce((s,i)=&gt;s+i.price*i.qty,0);
+  const badge=document.getElementById('cartBadge');
+  badge.textContent=qty;
+  badge.classList.toggle('opacity-0',qty===0);
+  badge.classList.toggle('scale-75',qty===0);
+  document.getElementById('cartFee').textContent=deliveryFee===0?'FREE':'₹'+deliveryFee;
+  document.getElementById('cartSub').textContent='₹'+sub;
+  document.getElementById('cartTotal').textContent='₹'+(sub+deliveryFee);
+  const body=document.getElementById('cartBody');
+  const foot=document.getElementById('cartFoot');
+  if(!cart.length){
+    body.innerHTML=`&lt;div class=&quot;flex flex-col items-center justify-center h-60 text-gray-300&quot;&gt;
+      &lt;i class=&quot;fas fa-shopping-basket text-5xl mb-4&quot;&gt;&lt;/i&gt;
+      &lt;p class=&quot;font-medium text-gray-400&quot;&gt;Your cart is empty&lt;/p&gt;
+      &lt;p class=&quot;text-sm text-gray-300 mt-1&quot;&gt;Browse products above&lt;/p&gt;&lt;/div&gt;`;
+    foot.classList.add('hidden');
+  }else{
+    body.innerHTML=cart.map(i=&gt;`
+      &lt;div class=&quot;flex items-center gap-3 bg-white p-3 rounded-xl border border-gray-100 shadow-sm&quot;&gt;
+        &lt;div class=&quot;w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 img-bg&quot;&gt;
+          &lt;img src=&quot;${i.img}&quot; class=&quot;w-full h-full object-cover&quot; onerror=&quot;this.style.display='none'&quot;&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex-1 min-w-0&quot;&gt;
+          &lt;p class=&quot;font-bold text-sm truncate&quot;&gt;${i.name}&lt;/p&gt;
+          &lt;p class=&quot;text-xs text-gray-400&quot;&gt;${i.unit} · ₹${i.price}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;flex items-center gap-1 bg-gray-50 rounded-lg px-2 py-1&quot;&gt;
+          &lt;button onclick=&quot;chgQty(${i.id},-1)&quot; class=&quot;w-6 h-6 flex items-center justify-center text-gray-500 hover:text-orange-500 transition-all text-xs&quot;&gt;&lt;i class=&quot;fas fa-minus&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+          &lt;span class=&quot;w-5 text-center font-bold text-sm&quot;&gt;${i.qty}&lt;/span&gt;
+          &lt;button onclick=&quot;chgQty(${i.id},1)&quot;  class=&quot;w-6 h-6 flex items-center justify-center text-gray-500 hover:text-orange-500 transition-all text-xs&quot;&gt;&lt;i class=&quot;fas fa-plus&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;`).join('');
+    foot.classList.remove('hidden');
+  }
+}
+window.toggleCart=function(){document.getElementById('cartSidebar').classList.toggle('translate-x-full')};
+
+// ── Checkout ────────────────────────────────────────────────
+window.goCheckout=function(){
+  if(!cart.length)return;
+  toggleCart();
+  const sub=cart.reduce((s,i)=&gt;s+i.price*i.qty,0);
+  const pkg=15, disc=25;
+  const taxable=sub+deliveryFee+pkg-disc;
+  const gst=Math.round(taxable*.05);
+  grandTotal=taxable+gst;
+  const {label}=feeForKm(distKm);
+  document.getElementById('summItems').innerHTML=cart.map(i=&gt;`
+    &lt;div class=&quot;flex justify-between items-center py-2 border-b border-gray-100 last:border-0&quot;&gt;
+      &lt;div class=&quot;flex items-center gap-3&quot;&gt;
+        &lt;div class=&quot;w-10 h-10 rounded-lg overflow-hidden img-bg flex-shrink-0&quot;&gt;&lt;img src=&quot;${i.img}&quot; class=&quot;w-full h-full object-cover&quot; onerror=&quot;this.style.display='none'&quot;&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;p class=&quot;font-semibold text-sm&quot;&gt;${i.name}&lt;/p&gt;&lt;p class=&quot;text-xs text-gray-400&quot;&gt;×${i.qty}&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;span class=&quot;font-bold text-sm&quot;&gt;₹${i.price*i.qty}&lt;/span&gt;
+    &lt;/div&gt;`).join('');
+  document.getElementById('sItemsT').textContent='₹'+sub;
+  document.getElementById('sDel').textContent=deliveryFee===0?'FREE':'₹'+deliveryFee;
+  document.getElementById('sDelBadge').textContent=label;
+  document.getElementById('sGst').textContent='₹'+gst;
+  document.getElementById('sGrandT').textContent='₹'+grandTotal;
+  document.getElementById('sAddr').textContent=custAddr;
+  document.getElementById('sDist').textContent=distKm&gt;0?`${distKm.toFixed(1)} km from hub`:'Location not set';
+  document.getElementById('summaryModal').classList.remove('hidden');
+};
+window.closeSummary=function(){document.getElementById('summaryModal').classList.add('hidden')};
+
+window.openPayment=function(){
+  closeSummary();
+  document.getElementById('payAmt').textContent='₹'+grandTotal;
+  document.getElementById('payModal').classList.remove('hidden');
+};
+window.closePayment=function(){
+  document.getElementById('payModal').classList.add('hidden');
+  selectedPay=null;
+  document.querySelectorAll('.pay-method').forEach(e=&gt;e.classList.remove('selected'));
+  document.querySelectorAll('.pay-radio div').forEach(e=&gt;e.classList.add('hidden'));
+  document.getElementById('payBtn').disabled=true;
+};
+window.pickPay=function(m){
+  selectedPay=m;
+  document.querySelectorAll('.pay-method').forEach(e=&gt;e.classList.remove('selected'));
+  document.querySelectorAll('.pay-radio div').forEach(e=&gt;e.classList.add('hidden'));
+  document.querySelector(`.pay-method[onclick=&quot;pickPay('${m}')&quot;]`).classList.add('selected');
+  document.querySelector(`.pay-radio[data-m=&quot;${m}&quot;] div`).classList.remove('hidden');
+  document.getElementById('payBtn').disabled=false;
+};
+window.confirmPay=function(){
+  if(!selectedPay)return;
+  closePayment();
+  const oid='#GND-'+Math.floor(10000+Math.random()*90000);
+  const pname={upi:'UPI',card:'Card',cod:'Cash on Delivery'}[selectedPay];
+  document.getElementById('orderId').textContent=oid;
+  document.getElementById('orderPay').textContent=pname;
+  document.getElementById('orderDist').textContent=distKm&gt;0?`${distKm.toFixed(1)} km`:'—';
+  document.getElementById('orderTotal').textContent='₹'+grandTotal;
+  document.getElementById('orderTimeLbl').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('doneModal').classList.remove('hidden');
+  if(window.saveOrder)window.saveOrder({orderId:oid,items:cart.map(i=&gt;({id:i.id,name:i.name,qty:i.qty,price:i.price})),total:grandTotal,deliveryFee,distanceKm:distKm,address:custAddr,paymentMethod:selectedPay,status:'confirmed'});
+  cart=[]; syncCart();
+};
+window.closeDone=function(){document.getElementById('doneModal').classList.add('hidden')};
+
+// ── TRACKING MAP ────────────────────────────────────────────
+window.startTracking=function(){
+  closeDone();
+  const sec=document.getElementById('trackingSection');
+  sec.classList.remove('hidden');
+  sec.scrollIntoView({behavior:'smooth'});
+  // Small delay to let section render &amp; be visible
+  setTimeout(buildTrackingMap, 700);
+};
+
+function buildTrackingMap(){
+  const destLat = custLat||23.2220, destLng = custLng||72.6680;
+  document.getElementById('destLabel').textContent = custAddr.split(',')[0];
+
+  // Vendor (store) is in Gandhinagar Sector 7 — midpoint of the journey
+  const STORE_LAT=23.2156, STORE_LNG=72.6369;
+
+  const centre={lat:(HUB_LAT+destLat)/2, lng:(HUB_LNG+destLng)/2};
+
+  trackingMap=new google.maps.Map(document.getElementById('trackingMap'),{
+    center:centre, zoom:11,
+    mapTypeId:'roadmap',
+    disableDefaultUI:false,
+    zoomControl:true,
+    mapTypeControl:false,
+    streetViewControl:false,
+    fullscreenControl:true,
+    styles:mapStyle()
+  });
+
+  // Hub marker
+  const hubMark=new google.maps.Marker({
+    position:{lat:HUB_LAT,lng:HUB_LNG},
+    map:trackingMap,
+    title:HUB_NAME,
+    icon:{url:'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',scaledSize:new google.maps.Size(36,36)}
+  });
+  new google.maps.InfoWindow({content:`&lt;div style=&quot;font-family:Syne,sans-serif;font-weight:700;color:#ea580c;padding:4px 2px&quot;&gt;📦 ${HUB_NAME}&lt;/div&gt;`}).open(trackingMap,hubMark);
+
+  // Store marker  
+  new google.maps.Marker({
+    position:{lat:STORE_LAT,lng:STORE_LNG},
+    map:trackingMap,
+    title:'SkyDrop Store — Sector 7',
+    icon:{url:'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',scaledSize:new google.maps.Size(32,32)}
+  });
+
+  // Destination marker
+  const destMark=new google.maps.Marker({
+    position:{lat:destLat,lng:destLng},
+    map:trackingMap,
+    title:'Your Delivery Location',
+    icon:{url:'https://maps.google.com/mapfiles/ms/icons/green-dot.png',scaledSize:new google.maps.Size(36,36)}
+  });
+  new google.maps.InfoWindow({content:`&lt;div style=&quot;font-family:Syne,sans-serif;font-weight:700;color:#16a34a;padding:4px 2px&quot;&gt;🏠 ${custAddr.split(',')[0]}&lt;/div&gt;`}).open(trackingMap,destMark);
+
+  // Drone SVG marker
+  const droneSVG = `&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;52&quot; height=&quot;52&quot; viewBox=&quot;0 0 52 52&quot;&gt;
+    &lt;circle cx=&quot;26&quot; cy=&quot;26&quot; r=&quot;24&quot; fill=&quot;rgba(249,115,22,0.15)&quot; stroke=&quot;#f97316&quot; stroke-width=&quot;1.5&quot;/&gt;
+    &lt;circle cx=&quot;26&quot; cy=&quot;26&quot; r=&quot;10&quot; fill=&quot;#f97316&quot;/&gt;
+    &lt;circle cx=&quot;26&quot; cy=&quot;26&quot; r=&quot;6&quot;  fill=&quot;#fb923c&quot;/&gt;
+    &lt;line x1=&quot;8&quot;  y1=&quot;8&quot;  x2=&quot;44&quot; y2=&quot;44&quot; stroke=&quot;#374151&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;line x1=&quot;44&quot; y1=&quot;8&quot;  x2=&quot;8&quot;  y2=&quot;44&quot; stroke=&quot;#374151&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;circle cx=&quot;8&quot;  cy=&quot;8&quot;  r=&quot;5&quot; fill=&quot;#4b5563&quot;/&gt;
+    &lt;circle cx=&quot;44&quot; cy=&quot;8&quot;  r=&quot;5&quot; fill=&quot;#4b5563&quot;/&gt;
+    &lt;circle cx=&quot;8&quot;  cy=&quot;44&quot; r=&quot;5&quot; fill=&quot;#4b5563&quot;/&gt;
+    &lt;circle cx=&quot;44&quot; cy=&quot;44&quot; r=&quot;5&quot; fill=&quot;#4b5563&quot;/&gt;
+    &lt;circle cx=&quot;26&quot; cy=&quot;26&quot; r=&quot;3&quot; fill=&quot;white&quot;/&gt;
+  &lt;/svg&gt;`;
+droneMarker=new google.maps.Marker({
+    position:{lat:HUB_LAT,lng:HUB_LNG},
+    map:trackingMap,
+    title:'SkyDrop Drone',
+    icon:{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(droneSVG), scaledSize:new google.maps.Size(52,52), anchor:new google.maps.Point(26,26)}
+  });
+
+  // Full path: Hub → Store → Customer
+  // We use the Directions API to get proper road-following path for both legs
+  const DS=new google.maps.DirectionsService();
+
+  // Draw leg 1: Hub to Store
+  DS.route({origin:{lat:HUB_LAT,lng:HUB_LNG},destination:{lat:STORE_LAT,lng:STORE_LNG},travelMode:google.maps.TravelMode.DRIVING},(r1,s1)=&gt;{
+    const path1 = s1==='OK' ? r1.routes[0].overview_path : [{lat:HUB_LAT,lng:HUB_LNG},{lat:STORE_LAT,lng:STORE_LNG}].map(p=&gt;new google.maps.LatLng(p.lat,p.lng));
+    
+    new google.maps.Polyline({path:path1,map:trackingMap,
+      strokeColor:'#f97316',strokeWeight:3,strokeOpacity:.7,
+      icons:[{icon:{path:google.maps.SymbolPath.FORWARD_CLOSED_ARROW,scale:3,fillColor:'#f97316',fillOpacity:1,strokeWeight:0},repeat:'60px'}]
+    });
+
+    // Draw leg 2: Store to Customer
+    DS.route({origin:{lat:STORE_LAT,lng:STORE_LNG},destination:{lat:destLat,lng:destLng},travelMode:google.maps.TravelMode.DRIVING},(r2,s2)=&gt;{
+      const path2 = s2==='OK' ? r2.routes[0].overview_path : [{lat:STORE_LAT,lng:STORE_LNG},{lat:destLat,lng:destLng}].map(p=&gt;new google.maps.LatLng(p.lat,p.lng));
+
+      new google.maps.Polyline({path:path2,map:trackingMap,
+        strokeColor:'#22c55e',strokeWeight:3,strokeOpacity:.7,
+        icons:[{icon:{path:google.maps.SymbolPath.FORWARD_CLOSED_ARROW,scale:3,fillColor:'#22c55e',fillOpacity:1,strokeWeight:0},repeat:'60px'}]
+      });
+
+      // Combine both paths and animate drone through them
+      const fullPath=[...path1,...path2];
+      animateDrone(fullPath, path1.length);
+    });
+  });
+}
+
+function animateDrone(path, splitIdx){
+  if(!droneMarker||!path.length)return;
+  if(droneTimer)clearInterval(droneTimer);
+
+  let idx=0;
+  const total=path.length;
+
+  function getLatLng(pt){
+    return typeof pt.lat==='function' ? {lat:pt.lat(),lng:pt.lng()} : {lat:pt.lat,lng:pt.lng};
+  }
+
+  droneTimer=setInterval(()=&gt;{
+    if(idx&gt;=total-1){
+      clearInterval(droneTimer);
+      // Arrived!
+      document.getElementById('etaDisplay').textContent='✓';
+      document.getElementById('trackStatus').textContent='Package delivered! 🎉';
+      document.getElementById('step3').className='bg-white rounded-2xl p-4 shadow flex items-center gap-3 border-2 step-done';
+      document.getElementById('step4').className='bg-white rounded-2xl p-4 shadow flex items-center gap-3 border-2 step-done';
+      return;
+    }
+    idx++;
+    const pos=getLatLng(path[idx]);
+    droneMarker.setPosition(pos);
+
+    // Smooth pan to keep drone centred
+    trackingMap.panTo(pos);
+
+    // Update ETA
+    const remaining=total-idx;
+    const secs=Math.round(remaining*0.25);
+    const m=Math.floor(secs/60), s=secs%60;
+    document.getElementById('etaDisplay').textContent=`${m}:${String(s).padStart(2,'0')}`;
+
+    // Update status at midpoint
+    if(idx===splitIdx){
+      document.getElementById('trackStatus').textContent='Picked up from store — heading to you!';
+    }
+  },200); // 200ms per step = smooth glide
+}
+
+// ── LOCATION MAP ────────────────────────────────────────────
+window.openLocModal=function(){
+  document.getElementById('locModal').classList.remove('hidden');
+  setTimeout(buildLocMap, 300);
+};
+window.closeLocModal=function(){document.getElementById('locModal').classList.add('hidden')};
+
+function buildLocMap(){
+  if(typeof google==='undefined'){
+    document.getElementById('locationMap').innerHTML=`&lt;div class=&quot;w-full h-full flex items-center justify-center text-gray-400 flex-col gap-2&quot;&gt;&lt;i class=&quot;fas fa-exclamation-triangle text-3xl text-orange-300&quot;&gt;&lt;/i&gt;&lt;span class=&quot;text-sm&quot;&gt;Maps API unavailable. Check API key.&lt;/span&gt;&lt;/div&gt;`;
+    return;
+  }
+  const iLat=custLat||23.2156, iLng=custLng||72.6369;
+  locMap=new google.maps.Map(document.getElementById('locationMap'),{
+    center:{lat:iLat,lng:iLng}, zoom:13,
+    mapTypeControl:false, streetViewControl:false, fullscreenControl:false,
+    styles:mapStyle()
+  });
+
+  // Hub pin (fixed)
+  new google.maps.Marker({
+    position:{lat:HUB_LAT,lng:HUB_LNG}, map:locMap, title:HUB_NAME,
+    icon:{url:'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',scaledSize:new google.maps.Size(32,32)}
+  });
+
+  // Draggable customer pin
+  locMarker=new google.maps.Marker({
+    position:{lat:iLat,lng:iLng}, map:locMap, draggable:true, title:'Your location',
+    icon:{url:'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',scaledSize:new google.maps.Size(36,36)}
+  });
+
+  const onPinMove=ll=&gt;{
+    const lat=ll.lat(), lng=ll.lng();
+    pendingLoc={lat,lng};
+    const km=haversine(HUB_LAT,HUB_LNG,lat,lng);
+    showDistInfo(km);
+    reverseGeo(lat,lng);
+    document.getElementById('confirmLocBtn').disabled=false;
+  };
+  locMarker.addListener('dragend',e=&gt;onPinMove(e.latLng));
+  locMap.addListener('click',e=&gt;{locMarker.setPosition(e.latLng);onPinMove(e.latLng)});
+
+  // Autocomplete
+  const inp=document.getElementById('locSearch');
+  const ac=new google.maps.places.Autocomplete(inp,{
+    componentRestrictions:{country:'in'},
+    bounds:new google.maps.LatLngBounds({lat:22.9,lng:72.4},{lat:23.4,lng:72.9})
+  });
+  ac.addListener('place_changed',()=&gt;{
+    const pl=ac.getPlace();
+    if(!pl.geometry)return;
+    const lat=pl.geometry.location.lat(), lng=pl.geometry.location.lng();
+    locMap.setCenter({lat,lng}); locMap.setZoom(15);
+    locMarker.setPosition({lat,lng});
+    pendingLoc={lat,lng};
+    custAddr=pl.formatted_address||pl.name||'Selected location';
+    showDistInfo(haversine(HUB_LAT,HUB_LNG,lat,lng));
+    document.getElementById('confirmLocBtn').disabled=false;
+  });
+
+  if(custLat){pendingLoc={lat:custLat,lng:custLng};showDistInfo(distKm);document.getElementById('confirmLocBtn').disabled=false}
+}
+
+function showDistInfo(km){
+  distKm=km;
+  const {fee,tier}=feeForKm(km);
+  const eta=Math.max(8,Math.round(4+km*.7));
+  document.getElementById('distTxt').textContent=`${km.toFixed(2)} km`;
+  document.getElementById('etaTxt').textContent=`ETA: ~${eta} min`;
+  document.getElementById('calcFee').textContent=fee===0?'FREE':'₹'+fee;
+  document.getElementById('tierMsg').textContent=feeMsg(tier,km);
+  document.getElementById('distInfo').classList.remove('hidden');
+}
+
+function reverseGeo(lat,lng){
+  if(!google.maps.Geocoder)return;
+  new google.maps.Geocoder().geocode({location:{lat,lng}},(r,s)=&gt;{
+    if(s==='OK'&amp;&amp;r[0])custAddr=r[0].formatted_address;
+  });
+}
+
+window.useMyLoc=function(){
+  if(!navigator.geolocation){toast('Geolocation not supported','err');return}
+  toast('Getting your location…');
+  navigator.geolocation.getCurrentPosition(pos=&gt;{
+    const lat=pos.coords.latitude, lng=pos.coords.longitude;
+    pendingLoc={lat,lng};
+    if(locMap&amp;&amp;locMarker){locMap.setCenter({lat,lng});locMap.setZoom(15);locMarker.setPosition({lat,lng})}
+    showDistInfo(haversine(HUB_LAT,HUB_LNG,lat,lng));
+    reverseGeo(lat,lng);
+    document.getElementById('confirmLocBtn').disabled=false;
+  },()=&gt;toast('Could not get location','err'));
+};
+
+window.confirmLoc=function(){
+  if(!pendingLoc)return;
+  custLat=pendingLoc.lat; custLng=pendingLoc.lng;
+  const {fee,tier,label}=feeForKm(distKm);
+  deliveryFee=fee;
+  syncCart();
+  document.getElementById('locChipTxt').textContent=custAddr.split(',')[0].slice(0,18);
+  const feeChip=document.getElementById('feeChip');
+  document.getElementById('feeChipTxt').textContent=fee===0?'FREE delivery':'₹'+fee+' delivery';
+  feeChip.classList.remove('hidden'); feeChip.style.display='flex';
+  document.getElementById('bannerDist').textContent=`${distKm.toFixed(1)} km — ${custAddr.split(',')[0]}`;
+  document.getElementById('bannerFee').textContent=fee===0?'FREE':'₹'+fee;
+  const tb=document.getElementById('bannerTier');
+  tb.textContent=label; tb.className=`px-2.5 py-1 rounded-lg text-xs font-bold ${tierCls(tier)}`;
+  document.getElementById('delBanner').classList.remove('hidden');
+  closeLocModal();
+  toast(`Location set! Delivery: ${fee===0?'FREE':'₹'+fee}`);
+};
+
+// ── Auth modal helpers ──────────────────────────────────────
+window.openAuthModal=()=&gt;document.getElementById('authModal').classList.remove('hidden');
+window.closeAuthModal=()=&gt;document.getElementById('authModal').classList.add('hidden');
+window.switchTab=function(t){
+  document.getElementById('loginForm').classList.toggle('hidden',t!=='login');
+  document.getElementById('regForm').classList.toggle('hidden',t!=='register');
+  document.getElementById('tabLogin').classList.toggle('active',t==='login');
+  document.getElementById('tabReg').classList.toggle('active',t==='register');
+  document.getElementById('liErr').classList.add('hidden');
+  document.getElementById('rgErr').classList.add('hidden');
+};
+window.togglePwd=function(id){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password'};
+
+// ── Misc ────────────────────────────────────────────────────
+window.scrollToProducts=function(){document.getElementById('productsTop').scrollIntoView({behavior:'smooth'})};
+
+// ── Map style ───────────────────────────────────────────────
+function mapStyle(){return[
+  {featureType:'poi',stylers:[{visibility:'off'}]},
+  {featureType:'transit',stylers:[{visibility:'off'}]},
+  {featureType:'road',elementType:'geometry',stylers:[{color:'#ffffff'}]},
+  {featureType:'road.highway',elementType:'geometry',stylers:[{color:'#fed7aa'}]},
+  {featureType:'water',stylers:[{color:'#bae6fd'}]},
+  {featureType:'landscape',stylers:[{color:'#f0fdf4'}]},
+  {featureType:'administrative',elementType:'geometry.stroke',stylers:[{color:'#d1d5db'}]},
+  {featureType:'administrative.locality',elementType:'labels.text.fill',stylers:[{color:'#374151'}]},
+]}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</body>
+</html>
